@@ -13,6 +13,8 @@ export class BlogNotesService {
   ) {}
 
   async create(createBlogNoteDto: CreateBlogNoteDto): Promise<BlogNote> {
+    // # return textual data before media.service is processed
+    // # better do this in a separate route since the data type is drastically different
     return this.blogNoteRepository.save(createBlogNoteDto);
   }
 
