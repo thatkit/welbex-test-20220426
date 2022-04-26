@@ -17,7 +17,6 @@ export class BlogNotesController {
 
   @Post()
   create(@Body() createBlogNoteDto: CreateBlogNoteDto) {
-    console.log('co:', createBlogNoteDto);
     return this.blogNotesService.create(createBlogNoteDto);
   }
 

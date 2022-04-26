@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 import { BlogNote } from './entities/blog-note.entity';
@@ -12,25 +12,26 @@ export class BlogNotesService {
     private blogNoteRepository: Repository<BlogNote>,
   ) {}
 
-  create(createBlogNoteDto: CreateBlogNoteDto) {
-    console.log('se:', createBlogNoteDto);
-    // console.log(this.blogNoteRepository)
-    return this.blogNoteRepository.create(createBlogNoteDto);
+  async create(createBlogNoteDto: CreateBlogNoteDto): Promise<BlogNote> {
+    return this.blogNoteRepository.save(createBlogNoteDto);
   }
 
-  findAll() {
+  async findAll(): Promise<BlogNote[]> {
     return this.blogNoteRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blogNote`;
+  async findOne(id: number): Promise<BlogNote> {
+    return this.blogNoteRepository.findOne(id);
   }
 
-  update(id: number, updateBlogNoteDto: UpdateBlogNoteDto) {
-    return `This action updates a #${id} blogNote`;
+  async update(
+    id: number,
+    updateBlogNoteDto: UpdateBlogNoteDto,
+  ): Promise<UpdateResult> {
+    return this.blogNoteRepository.update(id, updateBlogNoteDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blogNote`;
+  remove(id: number): Promise<DeleteResult> {
+    return this.blogNoteRepository.delete(id);
   }
 }
