@@ -1,15 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
+import { BlogNote } from './entities/blog-note.entity';
 
 @Injectable()
 export class BlogNotesService {
+  constructor(
+    @InjectRepository(BlogNote)
+    private blogNoteRepository: Repository<BlogNote>,
+  ) {}
+
   create(createBlogNoteDto: CreateBlogNoteDto) {
-    return 'This action adds a new blogNote';
+    console.log('se:', createBlogNoteDto);
+    // console.log(this.blogNoteRepository)
+    return this.blogNoteRepository.create(createBlogNoteDto);
   }
 
   findAll() {
-    return `This action returns all blogNotes`;
+    return this.blogNoteRepository.find();
   }
 
   findOne(id: number) {
