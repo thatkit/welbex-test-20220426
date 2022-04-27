@@ -1,14 +1,22 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateObjectDto } from './dto/create-object.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
 
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
-  @Post()
-  create(@Body() createObjectDto: CreateObjectDto) {
-    return this.mediaService.createObject(createObjectDto);
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('file')
+  create(@UploadedFile() file: Express.Multer.File) {
+    console.log('co:', file.buffer);
+    return this.mediaService.createObject(file.buffer);
   }
 
   @Get()

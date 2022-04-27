@@ -35,15 +35,16 @@ export class FilebaseCustomClient {
     Objects; // # need proper typing
 
     // @ create/save a new object
-    async createObject(bufferedMedia) {
+    async createObject(file: Buffer) {
+        console.log('fbClient:', file)
         await s3Client.putObject({
-            Body: testBuffer,
+            Body: file,
             Bucket: 'welbex-test-bucket',
-            Key: 'testimg',
+            Key: 'newer-file',
             ContentType: 'image/png'
         }, (err, data) => {
             if (err) return console.log(err);
-            console.log(data);
+            console.log('fbResponse:', data);
         }).promise();
     }
 
@@ -60,7 +61,6 @@ export class FilebaseCustomClient {
         return this.Objects;
     }
 }
-
 
 // // @ findOne object
 // s3Client.getObject({

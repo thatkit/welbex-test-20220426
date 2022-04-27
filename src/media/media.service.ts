@@ -20,8 +20,9 @@ export class MediaService {
     return this.mediaRepository.save(createMediaDto);
   }
 
-  async createObject(createObjectDto) {
-    return this.fbClient.createObject(createObjectDto);
+  async createObject(file: Buffer) {
+    console.log('se:', file)
+    return this.fbClient.createObject(file);
   }
 
   async findAllObjects() {
