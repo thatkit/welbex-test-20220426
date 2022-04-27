@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
 const AWS = require('aws-sdk');
 
