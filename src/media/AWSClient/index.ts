@@ -1,63 +1,85 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('dotenv').config();
+import 'dotenv/config';
+import fs from 'fs';
 const AWS = require('aws-sdk');
+
+// # this should be used on the frontend side
+const encodeBase64 = file => {
+    const binData = fs.readFileSync(file);
+    const base64Str = Buffer.from(binData).toString('base64');
+    console.log(base64Str);
+    return base64Str;
+}
+
+type ContentType = 'image/jpg'
+    | 'image/png'
+    | 'image/jpeg'
+    | 'image/jpg'
+    | 'image/svg'
+    | 'image/gif'
+    | 'video/mp4';
 
 const s3Client = new AWS.S3({
   endpoint: 'https://s3.filebase.com',
   signatureVersion: 'v4',
 });
 
-// s3Client.listBuckets(function (err, data) {
-//     if (err) {
-//         console.log(err, err.stack);
-//     } else {
-//         const params = {
-//             Body: 'Hello, world!',
-//             Bucket: data['Buckets'][0]['Name'],
-//             Key: 'exampleobject',
-//             ContentType: 'text/plain',
-//             Metadata: {
-//                 metadata1: 'value1',
-//                 metadata2: 'value2',
-//             },
-//         };
-//         s3Client.putObject(params, function (err, data) {
-//             if (err) {
-//                 console.log(err, err.stack);
-//             } else {
-//                 console.log(data);
-//             }
-//         });
-//     }
-// });
+export class FilebaseCustomClient {
+    readonly Bucket: string = 'welbex-test-bucket';
+    Key: string;
+    ContentType: ContentType;
+    Objects; // # need proper typing
 
-// // @ findAll objects
-// s3Client.listObjects({
+    // @ create/save a new object
+    async createObject(bufferedMedia) {
+        s3Client.putObject({
+            Body: bufferedMedia,
+            Bucket: 'welbex-test-bucket',
+            Key: 'video1.mp4',
+            ContentType: 'video/mp4'
+        }, (err, data) => {
+            if (err) return console.log(err);
+            console.log(data);
+        })
+    }
+
+    // @ findAll objects
+    // @ access: ADMIN // # only for dev purposes
+    async findAllObjects() {
+        await s3Client.listObjects({
+            Bucket: this.Bucket,
+        }, (err, objects) => {
+            if (err) return console.log(err);
+            this.Objects = objects.Contents;
+        }).promise();
+        
+        return this.Objects;
+    }
+}
+
+
+// // @ findOne object
+// s3Client.getObject({
 //     Bucket: 'welbex-test-bucket',
+//     Key: 'oneMoreTry.png'
 // }, (err, data) => {
 //     if (err) return console.log(err);
 //     console.log(data)
 // });
 
-// @ findOne object
-s3Client.getObject({
-    Bucket: 'welbex-test-bucket',
-    Key: 'Фото 30на40(новый).png'
-}, (err, data) => {
-    if (err) return console.log(err);
-    console.log(data)
-});
+// // @ get url for the media
+// s3Client.getSignedUrlPromise('getObject', {
+//     Bucket: 'welbex-test-bucket',
+//     Key: 'ок ок.png'
+// })
+//     .then(url => console.log(url))
+//     .catch(err => {
+//         console.log('err:')
+//         console.log(err)
+//     })
 
-// @ get url for the media
-s3Client.getSignedUrlPromise('getObject', {
-    Bucket: 'welbex-test-bucket',
-    Key: 'ок ок.png'
-})
-    .then(url => console.log(url))
-    .catch(err => {
-        console.log('err:')
-        console.log(err)
-    })
+// // @ UPLOAD from backend (preferably, right from frontend)
 
-// # @ UPLOAD from backend (preferably, right from frontend)
+// // runPutObject(encodeBase64('vov.mp4'))
+
+// // # What about videos and other image formats?
