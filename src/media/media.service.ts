@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FilebaseCustomClient } from './AWSClient';
+import { FilebaseCustomClient } from './FilebaseCustomClient';
 // import { s3Client } from './AWSClient';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { Media } from './entities/media.entity';
@@ -12,7 +12,7 @@ export class MediaService {
     @InjectRepository(Media)
     private mediaRepository: Repository<Media>,
 
-    private readonly fbClient: FilebaseCustomClient
+    private readonly fbClient: FilebaseCustomClient,
   ) {}
 
   async create(createMediaDto: CreateMediaDto) {
@@ -20,8 +20,8 @@ export class MediaService {
     return this.mediaRepository.save(createMediaDto);
   }
 
-  async createObject(file: Buffer) {
-    console.log('se:', file)
+  async createObject(file) {
+    console.log('se:', file);
     return this.fbClient.createObject(file);
   }
 

@@ -1,27 +1,6 @@
 /* eslint-disable prettier/prettier */
 import 'dotenv/config';
-// import fs from 'fs';
-const fs = require('fs');
 const AWS = require('aws-sdk');
-
-// # this should be used on the frontend side
-const encodeBase64 = file => {
-    const binData = fs.readFileSync(file);
-    const base64Str = new Buffer(binData, 'base64');
-    // const base64Str = Buffer.from(binData).toString('base64');
-    // console.log(base64Str);
-    fs.writeFileSync('text.txt', base64Str)
-    return base64Str;
-}
-const testBuffer = encodeBase64('wow.png');
-
-type ContentType = 'image/jpg'
-    | 'image/png'
-    | 'image/jpeg'
-    | 'image/jpg'
-    | 'image/svg'
-    | 'image/gif'
-    | 'video/mp4';
 
 const s3Client = new AWS.S3({
   endpoint: 'https://s3.filebase.com',
@@ -31,23 +10,33 @@ const s3Client = new AWS.S3({
 export class FilebaseCustomClient {
     readonly Bucket: string = 'welbex-test-bucket';
     Key: string;
-    ContentType: ContentType;
     Objects; // # need proper typing
 
-    // @ create/save a new object
-    async createObject(file: Buffer) {
+    // @ create/save a new object IN create() & update(:id) Postgres
+    // @ access: PUBLIC
+    async createObject(file) {
         console.log('fbClient:', file)
-        await s3Client.putObject({
-            Body: file,
+        const response = await s3Client.putObject({
+            Body: file.buffer,
             Bucket: 'welbex-test-bucket',
-            Key: 'newer-file',
-            ContentType: 'image/png'
+            Key: file.originalname, // # need a modified version
+            ContentType: file.mimetype
         }, (err, data) => {
             if (err) return console.log(err);
             console.log('fbResponse:', data);
         }).promise();
+
+        return response;
     }
 
+    // # findAllRelatedObjects IN find(:id) Postgres
+    // @ access: PUBLIC
+    async findAllRelatedObjects() {}
+    
+    // # deleteObjects IN update(:id) Postgres
+    // @ access: PUBLIC
+    async deleteObjects() {}
+    
     // @ findAll objects
     // @ access: ADMIN // # only for dev purposes
     async findAllObjects() {
@@ -81,9 +70,3 @@ export class FilebaseCustomClient {
 //         console.log('err:')
 //         console.log(err)
 //     })
-
-// // @ UPLOAD from backend (preferably, right from frontend)
-
-// // runPutObject(encodeBase64('vov.mp4'))
-
-// // # What about videos and other image formats?

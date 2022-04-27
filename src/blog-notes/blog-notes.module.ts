@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlogNote } from './entities/blog-note.entity';
 import { MediaService } from 'src/media/media.service';
 import { Media } from 'src/media/entities/media.entity';
-import { FilebaseCustomClient } from 'src/media/AWSClient';
+import { FilebaseCustomClient } from 'src/media/FilebaseCustomClient';
 import { MediaController } from 'src/media/media.controller';
 
 @Module({

@@ -15,8 +15,8 @@ export class MediaController {
   @UseInterceptors(FileInterceptor('file'))
   @Post('file')
   create(@UploadedFile() file: Express.Multer.File) {
-    console.log('co:', file.buffer);
-    return this.mediaService.createObject(file.buffer);
+    console.log('co:', file);
+    return this.mediaService.createObject(file);
   }
 
   @Get()
