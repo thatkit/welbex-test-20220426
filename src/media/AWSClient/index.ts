@@ -1,15 +1,19 @@
 /* eslint-disable prettier/prettier */
 import 'dotenv/config';
-import fs from 'fs';
+// import fs from 'fs';
+const fs = require('fs');
 const AWS = require('aws-sdk');
 
 // # this should be used on the frontend side
 const encodeBase64 = file => {
     const binData = fs.readFileSync(file);
-    const base64Str = Buffer.from(binData).toString('base64');
-    console.log(base64Str);
+    const base64Str = new Buffer(binData, 'base64');
+    // const base64Str = Buffer.from(binData).toString('base64');
+    // console.log(base64Str);
+    fs.writeFileSync('text.txt', base64Str)
     return base64Str;
 }
+const testBuffer = encodeBase64('wow.png');
 
 type ContentType = 'image/jpg'
     | 'image/png'
@@ -32,15 +36,15 @@ export class FilebaseCustomClient {
 
     // @ create/save a new object
     async createObject(bufferedMedia) {
-        s3Client.putObject({
-            Body: bufferedMedia,
+        await s3Client.putObject({
+            Body: testBuffer,
             Bucket: 'welbex-test-bucket',
-            Key: 'video1.mp4',
-            ContentType: 'video/mp4'
+            Key: 'testimg',
+            ContentType: 'image/png'
         }, (err, data) => {
             if (err) return console.log(err);
             console.log(data);
-        })
+        }).promise();
     }
 
     // @ findAll objects
@@ -52,7 +56,7 @@ export class FilebaseCustomClient {
             if (err) return console.log(err);
             this.Objects = objects.Contents;
         }).promise();
-        
+        console.log(this.Objects[0])
         return this.Objects;
     }
 }

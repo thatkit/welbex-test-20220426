@@ -20,6 +20,10 @@ export class MediaService {
     return this.mediaRepository.save(createMediaDto);
   }
 
+  async createObject(createObjectDto) {
+    return this.fbClient.createObject(createObjectDto);
+  }
+
   async findAllObjects() {
     return await this.fbClient.findAllObjects();
   }
