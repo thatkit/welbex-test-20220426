@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { s3Client } from './AWSClient';
+// import { s3Client } from './AWSClient';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { Media } from './entities/media.entity';
 

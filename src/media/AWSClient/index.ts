@@ -2,8 +2,6 @@
 /* eslint-disable prettier/prettier */
 require('dotenv').config();
 const AWS = require('aws-sdk');
-const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
 const s3Client = new AWS.S3({
   endpoint: 'https://s3.filebase.com',
@@ -62,3 +60,4 @@ s3Client.getSignedUrlPromise('getObject', {
         console.log(err)
     })
 
+// # @ UPLOAD from backend (preferably, right from frontend)
