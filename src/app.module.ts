@@ -8,6 +8,7 @@ import { Media } from './media/entities/media.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import 'dotenv/config';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import 'dotenv/config';
       username: 'root',
       password: 'root',
       database: 'root',
-      entities: [BlogNote, Media],
+      entities: [BlogNote, Media, User],
       synchronize: true,
     }),
     AuthModule,
