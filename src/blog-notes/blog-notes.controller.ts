@@ -6,7 +6,9 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { BlogNotesService } from './blog-notes.service';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
@@ -15,21 +17,25 @@ import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 export class BlogNotesController {
   constructor(private readonly blogNotesService: BlogNotesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createBlogNoteDto: CreateBlogNoteDto) {
     return this.blogNotesService.create(createBlogNoteDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.blogNotesService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.blogNotesService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(
     @Param('id') id: string,
@@ -38,6 +44,7 @@ export class BlogNotesController {
     return this.blogNotesService.update(+id, updateBlogNoteDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.blogNotesService.remove(+id);
