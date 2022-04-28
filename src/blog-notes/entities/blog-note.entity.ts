@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Media } from '../../media/entities/media.entity';
 
 @Entity()
@@ -15,6 +22,6 @@ export class BlogNote {
   @OneToMany(() => Media, (media) => media.blogNote)
   media: Media[];
 
-  @Column()
-  author: string;
+  @ManyToOne(() => User, (user) => user.user)
+  user: string;
 }
