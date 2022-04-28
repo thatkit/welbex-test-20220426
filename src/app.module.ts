@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { BlogNotesModule } from './blog-notes/blog-notes.module';
 import { BlogNote } from './blog-notes/entities/blog-note.entity';
 import { Media } from './media/entities/media.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import 'dotenv/config';
 
 @Module({
@@ -20,6 +22,8 @@ import 'dotenv/config';
       entities: [BlogNote, Media],
       synchronize: true,
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
