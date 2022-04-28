@@ -13,11 +13,9 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<ReturnedUserDto> {
-    if (this.userRepository.findOne(createUserDto.username)) {
-      throw new UnauthorizedException('The user already exists');
-    }
+  private currentUsername: string;
 
+  async createUser(createUserDto: CreateUserDto): Promise<ReturnedUserDto> {
     const { password, ...user } = await this.userRepository.save({
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),
@@ -26,6 +24,12 @@ export class UsersService {
   }
 
   async findOne(username: string): Promise<CreateUserDto | undefined> {
-    return this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOne({ username });
+    if (user) this.setCurrentUser(username);
+    return user;
+  }
+
+  setCurrentUser(username: string) {
+    this.currentUsername = username;
   }
 }
