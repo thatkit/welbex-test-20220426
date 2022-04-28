@@ -23,5 +23,5 @@ export class BlogNote {
   media: Media[];
 
   @ManyToOne(() => User, (user) => user.user)
-  user: string;
+  user: User;
 }

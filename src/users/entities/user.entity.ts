@@ -14,5 +14,5 @@ export class User {
   password: string;
   
   @OneToMany(() => BlogNote, (blogNote) => blogNote.user)
-  user: string;
+  user: BlogNote[];
 }

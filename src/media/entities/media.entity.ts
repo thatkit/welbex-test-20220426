@@ -6,8 +6,8 @@ export class Media {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  mediaAWSRef: string;
+  @Column({ unique: true })
+  fileName: string;
 
   @ManyToOne(() => BlogNote, (blogNote) => blogNote.media)
   blogNote: BlogNote;
