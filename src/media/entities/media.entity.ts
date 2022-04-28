@@ -9,6 +9,6 @@ export class Media {
   @Column({ unique: true })
   fileName: string;
 
-  @ManyToOne(() => BlogNote, (blogNote) => blogNote.media)
-  blogNote: BlogNote;
+  // @ManyToOne(() => BlogNote, (blogNote) => blogNote.media)
+  // blogNote: BlogNote;
 }

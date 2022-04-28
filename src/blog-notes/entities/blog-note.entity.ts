@@ -19,8 +19,8 @@ export class BlogNote {
   @Column()
   message: string;
 
-  @OneToMany(() => Media, (media) => media.blogNote)
-  media: Media[];
+  // @OneToMany(() => Media, (media) => media.blogNote)
+  // media: Media[];
 
   @ManyToOne(() => User, (user) => user.user)
   user: User;

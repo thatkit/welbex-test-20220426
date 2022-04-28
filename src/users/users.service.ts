@@ -13,7 +13,7 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  private currentUsername: string;
+  private currentUser: ReturnedUserDto;
 
   async createUser(createUserDto: CreateUserDto): Promise<ReturnedUserDto> {
     const { password, ...user } = await this.userRepository.save({
@@ -25,11 +25,18 @@ export class UsersService {
 
   async findOne(username: string): Promise<CreateUserDto | undefined> {
     const user = await this.userRepository.findOne({ username });
-    if (user) this.setCurrentUser(username);
+    console.log('before set cu:', this.currentUser)
+    if (user) this.setCurrentUser(user);
+    console.log('after set cu:', this.currentUser)
     return user;
   }
 
-  setCurrentUser(username: string) {
-    this.currentUsername = username;
+  setCurrentUser(user: ReturnedUserDto) {
+    this.currentUser = user;
+  }
+
+  get getCurrentUser() {
+    console.log('cu:', this.currentUser)
+    return this.currentUser;
   }
 }

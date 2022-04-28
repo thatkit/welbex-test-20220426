@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UsersService } from 'src/users/users.service';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { CreateBlogNoteDtoWithUserDto } from './dto/create-blog-note-with-user.dto';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 import { BlogNote } from './entities/blog-note.entity';
@@ -12,10 +14,13 @@ export class BlogNotesService {
     private blogNoteRepository: Repository<BlogNote>,
   ) {}
 
-  async create(createBlogNoteDto: CreateBlogNoteDto): Promise<BlogNote> {
-    // # return textual data before media.service is processed
-    // # better do this in a separate route since the data type is drastically different
-    return this.blogNoteRepository.save(createBlogNoteDto);
+  private usersService: UsersService;
+
+  async create(
+    createBlogNoteWithUserDto: CreateBlogNoteDtoWithUserDto,
+  ): Promise<BlogNote> {
+    console.log(createBlogNoteWithUserDto);
+    return this.blogNoteRepository.save(createBlogNoteWithUserDto);
   }
 
   async findAll(): Promise<BlogNote[]> {
@@ -30,7 +35,9 @@ export class BlogNotesService {
     id: number,
     updateBlogNoteDto: UpdateBlogNoteDto,
   ): Promise<UpdateResult> {
-    return this.blogNoteRepository.update(id, updateBlogNoteDto);
+    const user = this.usersService.getCurrentUser;
+    console.log({ ...updateBlogNoteDto, user });
+    return this.blogNoteRepository.update(id, { ...updateBlogNoteDto, user });
   }
 
   remove(id: number): Promise<DeleteResult> {

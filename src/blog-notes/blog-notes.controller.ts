@@ -7,6 +7,7 @@ import {
   Delete,
   Put,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { BlogNotesService } from './blog-notes.service';
@@ -19,8 +20,9 @@ export class BlogNotesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createBlogNoteDto: CreateBlogNoteDto) {
-    return this.blogNotesService.create(createBlogNoteDto);
+  create(@Body() createBlogNoteDto: CreateBlogNoteDto, @Request() req) {
+    console.log(req.user);
+    return this.blogNotesService.create({ ...createBlogNoteDto, user: req.user });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -49,4 +51,7 @@ export class BlogNotesController {
   remove(@Param('id') id: string) {
     return this.blogNotesService.remove(+id);
   }
+}
+function user(arg0: any, user: any, user: any) {
+  throw new Error('Function not implemented.');
 }
