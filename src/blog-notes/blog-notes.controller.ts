@@ -29,28 +29,37 @@ export class BlogNotesController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.blogNotesService.findAll();
+  findAll(@Request() req) {
+    return this.blogNotesService.findAll(req.user.id);
   }
 
+  // @ security risk: can retrieve an other user's item
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.blogNotesService.findOne(+id);
   }
 
+  // @ security risk: can update an other user's item
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(
     @Param('id') id: string,
     @Body() updateBlogNoteDto: UpdateBlogNoteDto,
+    @Request() req,
   ) {
-    return this.blogNotesService.update(+id, updateBlogNoteDto);
+    return this.blogNotesService.update(+id, {
+      ...updateBlogNoteDto,
+      userId: req.user.id,
+    });
   }
 
+  // @ security risk: can remove an other user's item
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.blogNotesService.remove(+id);
   }
 }
+
+// # req.user.id === repository,usrId?

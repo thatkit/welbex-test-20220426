@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { CreateBlogNoteDtoWithUserDto } from './dto/create-blog-note-with-user.dto';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 import { BlogNote } from './entities/blog-note.entity';
@@ -17,12 +16,11 @@ export class BlogNotesService {
   private usersService: UsersService;
 
   async create(createBlogNoteDto: CreateBlogNoteDto): Promise<BlogNote> {
-    console.log(createBlogNoteDto);
     return this.blogNoteRepository.save(createBlogNoteDto);
   }
 
-  async findAll(): Promise<BlogNote[]> {
-    return this.blogNoteRepository.find();
+  async findAll(userId: number): Promise<BlogNote[]> {
+    return this.blogNoteRepository.find({ userId });
   }
 
   async findOne(id: number): Promise<BlogNote> {
