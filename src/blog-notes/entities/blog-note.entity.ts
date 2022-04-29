@@ -5,18 +5,19 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Media } from '../../media/entities/media.entity';
 
 @Entity()
 export class BlogNote {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column()
-  date: string; // # Date type
+  @UpdateDateColumn()
+  date: string;
 
-  @Column()
+  @Column({ nullable: false })
   message: string;
 
   // @OneToMany(() => Media, (media) => media.blogNote)
@@ -25,6 +26,6 @@ export class BlogNote {
   @ManyToOne(() => User, (user) => user.user)
   user: User;
 
-  @Column()
-  userId: number;
+  @Column({ nullable: false })
+  userId: string;
 }

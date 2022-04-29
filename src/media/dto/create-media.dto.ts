@@ -1,4 +1,4 @@
 export class CreateMediaDto {
-  id: number;
+  id: string;
   mediaAWSRef: string;
 }

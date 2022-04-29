@@ -3,12 +3,15 @@ import { BlogNote } from '../../blog-notes/entities/blog-note.entity';
 
 @Entity()
 export class Media {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   fileName: string;
 
   // @ManyToOne(() => BlogNote, (blogNote) => blogNote.media)
   // blogNote: BlogNote;
+
+  @Column({ nullable: false })
+  blogNoteId: string;
 }
