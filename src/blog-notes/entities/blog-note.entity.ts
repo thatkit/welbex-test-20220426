@@ -24,4 +24,7 @@ export class BlogNote {
 
   @ManyToOne(() => User, (user) => user.user)
   user: User;
+
+  @Column()
+  userId: number;
 }

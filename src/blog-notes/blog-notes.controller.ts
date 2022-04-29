@@ -21,8 +21,10 @@ export class BlogNotesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createBlogNoteDto: CreateBlogNoteDto, @Request() req) {
-    console.log(req.user);
-    return this.blogNotesService.create({ ...createBlogNoteDto, user: req.user });
+    return this.blogNotesService.create({
+      ...createBlogNoteDto,
+      userId: req.user.id,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -51,7 +53,4 @@ export class BlogNotesController {
   remove(@Param('id') id: string) {
     return this.blogNotesService.remove(+id);
   }
-}
-function user(arg0: any, user: any, user: any) {
-  throw new Error('Function not implemented.');
 }

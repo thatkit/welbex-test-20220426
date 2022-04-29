@@ -16,11 +16,9 @@ export class BlogNotesService {
 
   private usersService: UsersService;
 
-  async create(
-    createBlogNoteWithUserDto: CreateBlogNoteDtoWithUserDto,
-  ): Promise<BlogNote> {
-    console.log(createBlogNoteWithUserDto);
-    return this.blogNoteRepository.save(createBlogNoteWithUserDto);
+  async create(createBlogNoteDto: CreateBlogNoteDto): Promise<BlogNote> {
+    console.log(createBlogNoteDto);
+    return this.blogNoteRepository.save(createBlogNoteDto);
   }
 
   async findAll(): Promise<BlogNote[]> {
@@ -35,9 +33,7 @@ export class BlogNotesService {
     id: number,
     updateBlogNoteDto: UpdateBlogNoteDto,
   ): Promise<UpdateResult> {
-    const user = this.usersService.getCurrentUser;
-    console.log({ ...updateBlogNoteDto, user });
-    return this.blogNoteRepository.update(id, { ...updateBlogNoteDto, user });
+    return this.blogNoteRepository.update(id, updateBlogNoteDto);
   }
 
   remove(id: number): Promise<DeleteResult> {
