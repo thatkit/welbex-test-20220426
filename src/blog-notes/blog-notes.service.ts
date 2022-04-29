@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Request } from 'express';
 import { Media } from 'src/media/entities/media.entity';
+import { mapMediaRefs } from 'src/tools/mapMediaRefs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
@@ -16,14 +18,19 @@ export class BlogNotesService {
     private mediaRepository: Repository<Media>,
   ) {}
 
-  async create(createBlogNoteDto: CreateBlogNoteDto): Promise<BlogNote> {
+  async create(
+    createBlogNoteDto: CreateBlogNoteDto,
+    userId: string,
+  ): Promise<BlogNote> {
     const { mediaRefs, ...blogNoteData } = createBlogNoteDto;
-    const blogNoteResponse = await this.blogNoteRepository.save(blogNoteData);
+    // saving blogNote
+    const blogNoteResponse = await this.blogNoteRepository.save({
+      ...blogNoteData,
+      userId,
+    });
+    // saving media related to blogNote
     await this.mediaRepository.save(
-      mediaRefs.map((mediaRef) => ({
-        fileName: mediaRef,
-        blogNoteId: blogNoteResponse.id,
-      })),
+      mapMediaRefs(mediaRefs, blogNoteResponse.id),
     );
     return blogNoteResponse;
   }

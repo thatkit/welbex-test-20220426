@@ -21,10 +21,7 @@ export class BlogNotesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createBlogNoteDto: CreateBlogNoteDto, @Request() req) {
-    return this.blogNotesService.create({
-      ...createBlogNoteDto,
-      userId: req.user.id,
-    });
+    return this.blogNotesService.create(createBlogNoteDto, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
