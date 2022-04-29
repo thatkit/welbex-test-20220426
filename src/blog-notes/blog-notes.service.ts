@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Media } from 'src/media/entities/media.entity';
 import { mapMediaRefs } from 'src/tools/mapMediaRefs';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import {
+  createQueryBuilder,
+  DeleteResult,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 import { BlogNote } from './entities/blog-note.entity';
@@ -39,8 +44,13 @@ export class BlogNotesService {
     return this.blogNoteRepository.find({ userId });
   }
 
-  async findOne(id: string): Promise<BlogNote> {
-    return this.blogNoteRepository.findOne(id);
+  async findOne(id: string): Promise<any> {
+    // return this.blogNoteRepository.findOne(id);
+    return await this.blogNoteRepository
+      .createQueryBuilder('blog_note')
+      .leftJoinAndSelect('blog_note.media', 'media')
+      .where('blog_note.id = :id', { id })
+      .getOne();
   }
 
   async update(

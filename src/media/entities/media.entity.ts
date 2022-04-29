@@ -9,7 +9,7 @@ export class Media {
   @Column({ unique: true, nullable: false })
   fileName: string;
 
-  @ManyToOne(() => BlogNote, (blogNote) => blogNote.media)
+  @ManyToOne((type) => BlogNote, (blogNote) => blogNote.media)
   blogNote: BlogNote;
 
   @Column({ nullable: false })
