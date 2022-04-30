@@ -1,14 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
 import { Media } from 'src/media/entities/media.entity';
 import { mapMediaRefs } from 'src/tools/mapMediaRefs';
-import {
-  createQueryBuilder,
-  DeleteResult,
-  Repository,
-  UpdateResult,
-} from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 import { BlogNote } from './entities/blog-note.entity';
@@ -45,7 +39,6 @@ export class BlogNotesService {
   }
 
   async findOne(id: string): Promise<any> {
-    // return this.blogNoteRepository.findOne(id);
     return await this.blogNoteRepository
       .createQueryBuilder('blog_note')
       .leftJoinAndSelect('blog_note.media', 'media')
@@ -57,7 +50,36 @@ export class BlogNotesService {
     id: string,
     updateBlogNoteDto: UpdateBlogNoteDto,
   ): Promise<UpdateResult> {
-    return this.blogNoteRepository.update(id, updateBlogNoteDto);
+    const { mediaRefs: newMediaRefs, ...blogNoteData } = updateBlogNoteDto;
+
+    if (newMediaRefs && newMediaRefs.length !== 0) {
+      const prevMedia = await this.mediaRepository.find({ blogNoteId: id });
+      const prevMediaRefs = prevMedia.map((obj) => obj.fileName);
+      // check for deleted refs
+      const deletedMediaRefs = prevMediaRefs.filter(
+        (mediaRef) => !newMediaRefs.includes(mediaRef),
+      );
+      // console.log('deletedMediaRefs:', deletedMediaRefs);
+
+      // check for new refs
+      const addedMediaRefs = newMediaRefs.filter(
+        (mediaRef) => !prevMediaRefs.includes(mediaRef),
+      );
+      // console.log('addedMediaRefs:', addedMediaRefs);
+
+      if (deletedMediaRefs && deletedMediaRefs.length !== 0) {
+        const deletedMediaIds = prevMedia
+          .filter((media) => deletedMediaRefs.includes(media.fileName))
+          .map((media) => media.id);
+        this.mediaRepository.delete(deletedMediaIds);
+      }
+
+      if (addedMediaRefs && addedMediaRefs.length !== 0) {
+        this.mediaRepository.save(mapMediaRefs(addedMediaRefs, id));
+      }
+    }
+
+    return this.blogNoteRepository.update(id, blogNoteData);
   }
 
   async remove(id: string): Promise<DeleteResult> {
