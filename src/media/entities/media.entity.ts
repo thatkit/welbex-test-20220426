@@ -9,7 +9,9 @@ export class Media {
   @Column({ unique: true, nullable: false })
   fileName: string;
 
-  @ManyToOne((type) => BlogNote, (blogNote) => blogNote.media)
+  @ManyToOne(() => BlogNote, (blogNote) => blogNote.media, {
+    onDelete: 'CASCADE',
+  })
   blogNote: BlogNote;
 
   @Column({ nullable: false })
