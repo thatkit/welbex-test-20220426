@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Media } from 'src/media/entities/media.entity';
-import { mapMediaRefs } from 'src/tools/mapMediaRefs';
+import { filterOutMediaRefs } from 'src/tools/filterOurMediaRefs';
+import { mapToMediaIds } from 'src/tools/mapFromMediaRefs';
+import { mapToMediaRefs } from 'src/tools/mapToMediaRefs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
@@ -29,7 +31,7 @@ export class BlogNotesService {
     });
     // saving media related to blogNote
     await this.mediaRepository.save(
-      mapMediaRefs(mediaRefs, blogNoteResponse.id),
+      mapToMediaRefs(mediaRefs, blogNoteResponse.id),
     );
     return blogNoteResponse;
   }
@@ -55,27 +57,16 @@ export class BlogNotesService {
     if (newMediaRefs && newMediaRefs.length !== 0) {
       const prevMedia = await this.mediaRepository.find({ blogNoteId: id });
       const prevMediaRefs = prevMedia.map((obj) => obj.fileName);
-      // check for deleted refs
-      const deletedMediaRefs = prevMediaRefs.filter(
-        (mediaRef) => !newMediaRefs.includes(mediaRef),
-      );
-      // console.log('deletedMediaRefs:', deletedMediaRefs);
 
-      // check for new refs
-      const addedMediaRefs = newMediaRefs.filter(
-        (mediaRef) => !prevMediaRefs.includes(mediaRef),
-      );
-      // console.log('addedMediaRefs:', addedMediaRefs);
+      const deletedMediaRefs = filterOutMediaRefs(prevMediaRefs, newMediaRefs);
+      const addedMediaRefs = filterOutMediaRefs(newMediaRefs, prevMediaRefs);
 
       if (deletedMediaRefs && deletedMediaRefs.length !== 0) {
-        const deletedMediaIds = prevMedia
-          .filter((media) => deletedMediaRefs.includes(media.fileName))
-          .map((media) => media.id);
-        this.mediaRepository.delete(deletedMediaIds);
+        this.mediaRepository.delete(mapToMediaIds(prevMedia, deletedMediaRefs));
       }
 
       if (addedMediaRefs && addedMediaRefs.length !== 0) {
-        this.mediaRepository.save(mapMediaRefs(addedMediaRefs, id));
+        this.mediaRepository.save(mapToMediaRefs(addedMediaRefs, id));
       }
     }
 

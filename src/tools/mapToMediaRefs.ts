@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { InternalServerErrorException } from '@nestjs/common';
 
-export const mapMediaRefs = (refsArr, parentId) => {
+export const mapToMediaRefs = (refsArr, parentId) => {
   if (!refsArr) throw new InternalServerErrorException();
   
   const objArr = refsArr.map((ref) => ({
