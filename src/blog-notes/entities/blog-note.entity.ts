@@ -17,6 +17,9 @@ export class BlogNote {
   @UpdateDateColumn()
   date: string;
 
+  @Column({ nullable: false, unique: true })
+  title: string;
+
   @Column({ nullable: false })
   message: string;
 

@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import 'dotenv/config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const AWS = require('aws-sdk');
 
 const s3Client = new AWS.S3({
@@ -14,19 +15,24 @@ export class FilebaseCustomClient {
 
     // @ create/save a new object IN create() & update(:id) Postgres
     // @ access: PUBLIC
-    async createObject(file) {
-        console.log('fbClient:', file)
-        const response = await s3Client.putObject({
-            Body: file.buffer,
-            Bucket: 'welbex-test-bucket',
-            Key: file.originalname, // # need a modified version
-            ContentType: file.mimetype
-        }, (err, data) => {
-            if (err) return console.log(err);
-            console.log('fbResponse:', data);
-        }).promise();
-
-        return response;
+    async createObjects(
+        username,
+        blogNoteTitle,
+        files
+    ) {
+        // console.log('fbClient:', blogNoteTitle);
+        return await Promise.all(files.map((file) => {
+            return s3Client.putObject({
+                Body: file.buffer,
+                Bucket: 'welbex-test-bucket',
+                Key: `${username}/${blogNoteTitle}/${file.originalname}`,
+                ContentType: file.mimetype
+            }, (err, data) => {
+                if (err) return console.log(err);
+                // console.log('fbResponse:', data);
+                return data;
+            }).promise();
+        }));
     }
 
     // # findAllRelatedObjects IN find(:id) Postgres

@@ -3,10 +3,11 @@ import { FilebaseCustomClient } from './FilebaseCustomClient';
 
 @Injectable()
 export class MediaService {
-  private readonly fbClient: FilebaseCustomClient;
+  constructor(private readonly fbClient: FilebaseCustomClient) {}
 
-  async createObject(file) {
-    return this.fbClient.createObject(file);
+  createObjects(username, blogNoteTitle, files) {
+    // console.log('se blogNoteTitle:', blogNoteTitle)
+    return this.fbClient.createObjects(username, blogNoteTitle, files);
   }
 
   async findAllObjects(blogNoteId: string) {
