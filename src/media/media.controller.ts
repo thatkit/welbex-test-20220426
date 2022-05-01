@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -21,9 +22,9 @@ export class MediaController {
   @UseInterceptors(FilesInterceptor('files'))
   @Post(':blogNoteTitle')
   create(
-    @UploadedFiles() files: Express.Multer.File[],
     @Request() req,
     @Param() blogNoteTitle,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     // console.log('co blogNoteTitle:', blogNoteTitle)
     return this.mediaService.createObjects(
@@ -44,8 +45,12 @@ export class MediaController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  delete(@Param() mediaRef: string) {
-    return 'hello deleted';
+  @Delete(':blogNoteTitle')
+  delete(@Request() req, @Param() blogNoteTitle, @Body() fileNames) {
+    return this.mediaService.deleteObjects(
+      req.user.username,
+      blogNoteTitle.blogNoteTitle,
+      fileNames.fileNames,
+    );
   }
 }

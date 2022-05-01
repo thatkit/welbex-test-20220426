@@ -11,11 +11,13 @@ export class MediaService {
   }
 
   findAllObjects(username: string, blogNoteTitle: string) {
-    console.log('se blogNoteTitle:', blogNoteTitle)
+    // console.log('se blogNoteTitle:', blogNoteTitle)
     return this.fbClient.findAllObjects(username, blogNoteTitle);
   }
 
-  async deleteObject(mediaRef: string) {
-    return 'hello im deleted';
+  deleteObjects(username: string, blogNoteTitle: string, fileNames) {
+    return fileNames.map(
+      ({ fileName }) => `DELETE ${username}/${blogNoteTitle}/${fileName}`,
+    );
   }
 }
