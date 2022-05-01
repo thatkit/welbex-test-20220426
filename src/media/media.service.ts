@@ -16,8 +16,9 @@ export class MediaService {
   }
 
   deleteObjects(username: string, blogNoteTitle: string, fileNames) {
-    return fileNames.map(
-      ({ fileName }) => `DELETE ${username}/${blogNoteTitle}/${fileName}`,
-    );
+    // return fileNames.map(
+    //   ({ fileName }) => `DELETE ${username}/${blogNoteTitle}/${fileName}`,
+    // );
+    return this.fbClient.deleteObjects(username, blogNoteTitle, fileNames);
   }
 }

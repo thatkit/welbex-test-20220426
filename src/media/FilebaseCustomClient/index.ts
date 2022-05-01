@@ -11,6 +11,7 @@ const s3Client = new AWS.S3({
 export class FilebaseCustomClient {
     readonly Bucket: string = process.env.AWS_BUCKET;
     Objects; // # need proper typing
+    DeletedObjects;
 
     // @ save objects IN create() or update(:blogNoteId) Postgres
     // @ access: PRIVATE
@@ -23,13 +24,13 @@ export class FilebaseCustomClient {
         return await Promise.all(files.map((file) => {
             return s3Client.putObject({
                 Body: file.buffer,
-                Bucket: 'welbex-test-bucket',
+                Bucket: this.Bucket,
                 Key: `${username}/${blogNoteTitle}/${file.originalname}`,
                 ContentType: file.mimetype
-            }, (err, data) => {
+            }, (err, objects) => {
                 if (err) return console.log(err);
                 // console.log('fbResponse:', data);
-                return data;
+                return objects;
             }).promise();
         }));
     }
@@ -38,7 +39,7 @@ export class FilebaseCustomClient {
     // @ access: PRIVATE
     async findAllObjects(username, blogNoteTitle) {
         // console.log('fbClient blogNoteTitle:', blogNoteTitle)
-        console.log(`${username}/${blogNoteTitle}/`)
+        // console.log(`${username}/${blogNoteTitle}/`)
         await s3Client.listObjects({
             Bucket: this.Bucket,
             Prefix: `${username}/${blogNoteTitle}/`,
@@ -46,13 +47,26 @@ export class FilebaseCustomClient {
             if (err) return console.log(err);
             this.Objects = objects.Contents;
         }).promise();
-        console.log(this.Objects)
+        // console.log(this.Objects)
         return this.Objects;
     }
 
     // @ deleteObjects IN update(:blogNoteId) or delete(:blogNoteId) Postgres
     // @ access: PRIVATE
-    async deleteObjects() {}
+    async deleteObjects(username, blogNoteTitle, fileNames) {
+        const Keys = fileNames.map(({ fileName }) => ({
+            Key: `${username}/${blogNoteTitle}/${fileName}`,
+        }));
+        // console.log('Keys:', Keys);
+        return await s3Client.deleteObjects({
+            Bucket: this.Bucket,
+            Delete: { Objects: Keys, Quiet: false },
+        }, (err, objects) => {
+            if (err) return console.log(err);
+            // console.log('fbResponse:', objects);
+            // return objects;
+        }).promise();
+    }
 
     // # @ fetch presigned URLs IN findOne(:blogNoteId) Postgres 
     // @ access: PRIVATE
