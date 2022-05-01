@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 import styles from './styles.module.scss';
 
-export const BlogNote = ({ data }: { data: any }) => { // £ any
+export const BlogNote = ({ data }: { data: any }) => { // # any
   return (
     <Card className={styles.card}>
         <div className={styles.imgContainer}>
