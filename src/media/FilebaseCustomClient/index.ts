@@ -45,14 +45,17 @@ export class FilebaseCustomClient {
     
     // @ findAll objects
     // @ access: ADMIN // # only for dev purposes
-    async findAllObjects() {
+    async findAllObjects(username, blogNoteTitle) {
+        // console.log('fbClient blogNoteTitle:', blogNoteTitle)
+        console.log(`${username}/${blogNoteTitle}/`)
         await s3Client.listObjects({
             Bucket: this.Bucket,
+            Prefix: `${username}/${blogNoteTitle}/`,
         }, (err, objects) => {
             if (err) return console.log(err);
             this.Objects = objects.Contents;
         }).promise();
-        console.log(this.Objects[0])
+        console.log(this.Objects)
         return this.Objects;
     }
 }

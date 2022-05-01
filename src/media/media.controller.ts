@@ -13,13 +13,13 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MediaService } from './media.service';
 
-@Controller('media')
+@Controller('files')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files'))
-  @Post('files/:blogNoteTitle')
+  @Post(':blogNoteTitle')
   create(
     @UploadedFiles() files: Express.Multer.File[],
     @Request() req,
@@ -34,13 +34,17 @@ export class MediaController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('files/:id')
-  findAllObjects(blogNoteId: string) {
-    return this.mediaService.findAllObjects(blogNoteId);
+  @Get(':blogNoteTitle')
+  findAllObjects(@Request() req, @Param() blogNoteTitle) {
+    console.log('co blogNoteTitle:', blogNoteTitle);
+    return this.mediaService.findAllObjects(
+      req.user.username,
+      blogNoteTitle.blogNoteTitle,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('files/:id')
+  @Delete(':id')
   delete(@Param() mediaRef: string) {
     return 'hello deleted';
   }
