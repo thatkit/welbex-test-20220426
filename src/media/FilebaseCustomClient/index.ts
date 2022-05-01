@@ -4,17 +4,16 @@ import 'dotenv/config';
 const AWS = require('aws-sdk');
 
 const s3Client = new AWS.S3({
-  endpoint: 'https://s3.filebase.com',
+  endpoint: process.env.AWS_ENDPOINT,
   signatureVersion: 'v4',
 });
 
 export class FilebaseCustomClient {
-    readonly Bucket: string = 'welbex-test-bucket';
-    Key: string;
+    readonly Bucket: string = process.env.AWS_BUCKET;
     Objects; // # need proper typing
 
-    // @ create/save a new object IN create() & update(:id) Postgres
-    // @ access: PUBLIC
+    // @ save objects IN create() or update(:blogNoteId) Postgres
+    // @ access: PRIVATE
     async createObjects(
         username,
         blogNoteTitle,
@@ -34,17 +33,9 @@ export class FilebaseCustomClient {
             }).promise();
         }));
     }
-
-    // # findAllRelatedObjects IN find(:id) Postgres
-    // @ access: PUBLIC
-    async findAllRelatedObjects() {}
     
-    // # deleteObjects IN update(:id) Postgres
-    // @ access: PUBLIC
-    async deleteObjects() {}
-    
-    // @ findAll objects
-    // @ access: ADMIN // # only for dev purposes
+    // # @ findAll objects IN findOne(:blogNoteId) Postgres 
+    // @ access: PRIVATE
     async findAllObjects(username, blogNoteTitle) {
         // console.log('fbClient blogNoteTitle:', blogNoteTitle)
         console.log(`${username}/${blogNoteTitle}/`)
@@ -58,24 +49,25 @@ export class FilebaseCustomClient {
         console.log(this.Objects)
         return this.Objects;
     }
+
+    // @ deleteObjects IN update(:blogNoteId) or delete(:blogNoteId) Postgres
+    // @ access: PRIVATE
+    async deleteObjects() {}
+
+    // # @ fetch presigned URLs IN findOne(:blogNoteId) Postgres 
+    // @ access: PRIVATE
+    async fetchPresignedUrl(username, blogNoteTitle, fileName) {
+        return await s3Client.getSignedUrlPromise('getObject', {
+            Bucket: this.Bucket,
+            Key: fileName
+        }).promise();
+
+            // .then(url => console.log(url))
+            // .catch(err => {
+            //     console.log('err:')
+            //     console.log(err)
+            // })
+    }
 }
 
-// // @ findOne object
-// s3Client.getObject({
-//     Bucket: 'welbex-test-bucket',
-//     Key: 'oneMoreTry.png'
-// }, (err, data) => {
-//     if (err) return console.log(err);
-//     console.log(data)
-// });
-
-// // @ get url for the media
-// s3Client.getSignedUrlPromise('getObject', {
-//     Bucket: 'welbex-test-bucket',
-//     Key: 'ок ок.png'
-// })
-//     .then(url => console.log(url))
-//     .catch(err => {
-//         console.log('err:')
-//         console.log(err)
-//     })
+// # need to transform response === omit iwber info

@@ -36,7 +36,7 @@ export class MediaController {
   @UseGuards(JwtAuthGuard)
   @Get(':blogNoteTitle')
   findAllObjects(@Request() req, @Param() blogNoteTitle) {
-    console.log('co blogNoteTitle:', blogNoteTitle);
+    // console.log('co blogNoteTitle:', blogNoteTitle);
     return this.mediaService.findAllObjects(
       req.user.username,
       blogNoteTitle.blogNoteTitle,
