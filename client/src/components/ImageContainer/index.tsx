@@ -14,8 +14,8 @@ export const ImageContainer = ({
     <div className={styles.imgContainer}>
       {media.map((file: any, ind: number) => {
         return action === 'edit' ? (
-          <ImageDeleteWrapper>
-            <Image file={file} key={ind} />
+          <ImageDeleteWrapper key={ind}>
+            <Image file={file} />
           </ImageDeleteWrapper>
         ) : (
           <Image file={file} key={ind} />
