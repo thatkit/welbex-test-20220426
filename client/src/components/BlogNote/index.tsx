@@ -13,7 +13,7 @@ export const BlogNote = ({ data }: { data: any }) => {
   return (
     <Card className={styles.card}>
       <div className={styles.cardBorder}>
-        <ImageContainer action={action.action} media={data.media} />
+        <ImageContainer action={action.action} data={data} />
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>
             <CardTitle className={styles.title} tag="h5">

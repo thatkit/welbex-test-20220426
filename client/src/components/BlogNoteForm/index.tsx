@@ -23,7 +23,7 @@ export const BlogNoteForm = ({ action, data }: { action: any; data: any }) => {
         />
         <Label for="message">Message</Label>
       </FormGroup>
-      <FilesInput media={data.media} />
+      <FilesInput data={data} />
     </Form>
   );
 };

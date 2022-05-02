@@ -11,9 +11,9 @@ import { useGlobalState } from '../globalState';
 export const BlogNotesScreen = observer((): JSX.Element => {
   const [state] = useState(useGlobalState());
 
-  useEffect(() => {
-    state.updateBlogNotesWithMediaUrl();
-  }, []);
+  // useEffect(() => {
+  //   state.updateBlogNotesWithMediaUrl();
+  // }, []);
 
   return (
     <Container className={styles.app}>

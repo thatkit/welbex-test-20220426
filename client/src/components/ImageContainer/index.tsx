@@ -5,20 +5,20 @@ import { ImageDeleteWrapper } from '../ImageDeleteWrapper';
 
 export const ImageContainer = ({
   action,
-  media,
+  data,
 }: {
   action: any;
-  media: any;
+  data: any;
 }) => {
   return (
     <div className={styles.imgContainer}>
-      {media.map((file: any, ind: number) => {
+      {data.media.map((file: any, ind: number) => {
         return action === 'edit' ? (
           <ImageDeleteWrapper key={ind}>
-            <Image file={file} />
+            <Image blogNoteTitle={data.title} file={file} />
           </ImageDeleteWrapper>
         ) : (
-          <Image file={file} key={ind} />
+          <Image blogNoteTitle={data.title} file={file} key={ind} />
         );
       })}
     </div>

@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormGroup, Input } from 'reactstrap';
 import { ImageContainer } from '../ImageContainer';
 
-export const FilesInput = ({ media }: { media: any }) => {
+export const FilesInput = ({ data }: { data: any }) => {
   // # any
-  const [filesQty, setFilesQty] = useState(
-    Boolean(media) !== false ? media.length : 0,
-  );
-
   return (
     <>
-      {Boolean(media) !== false && (
-        <ImageContainer action={'edit'} media={media} />
+      {Boolean(data.media) !== false && (
+        <ImageContainer action={'edit'} data={data} />
       )}
       <FormGroup>
         <Input
@@ -19,7 +15,7 @@ export const FilesInput = ({ media }: { media: any }) => {
           name="file"
           placeholder="your file"
           type="file"
-          onInput={() => console.log(filesQty)}
+          onInput={() => console.log('filesQty')}
         />
       </FormGroup>
     </>
