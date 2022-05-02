@@ -1,32 +1,37 @@
 @use '../../styles/vars';
 
 .card {
-    padding: vars.$gap;
-    border-radius: vars.$bradius;
+    min-width: 33%;
+    border-width: 0;
 
-    .imgContainer {
-        margin-bottom: vars.$gap;
-        display: flex;
-        flex-flow: row wrap;
-        gap: 0.5rem;
+    .cardBorder {
+        padding: vars.$gap;
+        border: 2px solid #6c757d;
+        border-radius: vars.$bradius;
+
+        .imgContainer {
+            margin-bottom: vars.$gap;
+            display: flex;
+            flex-flow: row wrap;
+            gap: 0.5rem;
+            
+            .img {
+                height: 3rem;
+                width: 3rem;
+                border-radius: vars.$bradius !important;
+            }
+        }
         
-        .img {
-            height: 3rem;
-            width: 3rem;
-            border-radius: vars.$bradius !important;
-        }
-    }
+        .cardBody {
+            height: 100%;
+            padding: 0;
+            display: flex;
+            flex-flow: column nowrap;
     
-    .cardBody {
-        height: 100%;
-        padding: 0;
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: space-between !important;
-
-        .btn {
-            margin-top: vars.$gap;
-            justify-self: flex-end !important;
+            .textPart {
+                margin-bottom: vars.$gap;
+            }
         }
     }
+
 }

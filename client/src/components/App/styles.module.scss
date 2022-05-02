@@ -1,9 +1,19 @@
+@use '../../styles/vars';
+
 .app {
   height: 100vh;
   width: 100vw;
+  padding-top: vars.$gap;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  background-color: #FFFFF0;
+  gap: vars.$gap;
+
+  .btnWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
