@@ -1,7 +1,7 @@
 @use '../../styles/vars';
 
 .img {
-    height: 3rem;
-    width: 3rem;
+    height: vars.$img-size;
+    width: vars.$img-size;
     border-radius: vars.$bradius !important;
 }

@@ -1,0 +1,18 @@
+@use '../../styles/vars';
+
+.wrapper {
+    height: vars.$img-size;
+    width: vars.$img-size;
+    border-radius: vars.$bradius;
+    cursor: pointer;
+
+    .closeIcon {
+        height: 100%;
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: vars.$bradius;
+        position: relative;
+        bottom: 100%;
+        background-color: transparentize($color: #dc3545, $amount: 0.5);
+    }
+}

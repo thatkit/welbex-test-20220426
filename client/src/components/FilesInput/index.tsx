@@ -4,11 +4,15 @@ import { ImageContainer } from '../ImageContainer';
 
 export const FilesInput = ({ media }: { media: any }) => {
   // # any
-  const [filesQty, setFilesQty] = useState(media.length);
+  const [filesQty, setFilesQty] = useState(
+    Boolean(media) !== false ? media.length : 0,
+  );
 
   return (
     <>
-			{media.length !== 0 && <ImageContainer media={media}/>}
+      {Boolean(media) !== false && (
+        <ImageContainer action={'edit'} media={media} />
+      )}
       <FormGroup>
         <Input
           id="file"

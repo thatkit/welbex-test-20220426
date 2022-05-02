@@ -7,13 +7,13 @@ import { ImageContainer } from '../ImageContainer';
 export const BlogNote = ({ data }: { data: any }) => {
   // # any
   const action = {
-    action: 'edit',
+    action: 'create',
   };
 
   return (
     <Card className={styles.card}>
       <div className={styles.cardBorder}>
-        <ImageContainer media={data.media}/>
+        <ImageContainer action={action.action} media={data.media} />
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>
             <CardTitle className={styles.title} tag="h5">
@@ -24,7 +24,7 @@ export const BlogNote = ({ data }: { data: any }) => {
             </CardSubtitle>
             <CardText>{data.message}</CardText>
           </div>
-          <BlogNoteModal action={action} data={data} />
+          <BlogNoteModal action={{ action: 'edit' }} data={data} />
         </CardBody>
       </div>
     </Card>
