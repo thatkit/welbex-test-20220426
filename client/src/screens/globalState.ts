@@ -1,7 +1,8 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import { BlogNote } from './types';
-import findAllJson from '../mockupData/findAll.json';
+import { findAllJson } from '../mockupData/findAll';
+import { mockupUrl } from '../mockupData/url';
 
 export class GlobalState {
     user: {
@@ -12,7 +13,7 @@ export class GlobalState {
         password: 'pass1',
     };
 
-    blogNotes: BlogNote[] = JSON.parse(JSON.stringify(findAllJson));
+    blogNotes: BlogNote[] = findAllJson;
 
     constructor() {
         makeAutoObservable(this);
@@ -24,6 +25,20 @@ export class GlobalState {
 
     get getBlogNotes() {
         return this.blogNotes;
+    }
+
+    setBlogNotes(blogNotes: BlogNote[]) {
+        this.blogNotes = blogNotes;
+    }
+
+    updateBlogNotesWithMediaUrl() {
+        const updatedBlogNotes = this.blogNotes.map((blogNote) => ({
+            ...blogNote,
+            media: blogNote.media?.map((file) => ({
+                url: mockupUrl,
+            })),
+        }));
+        this.setBlogNotes(updatedBlogNotes);
     }
 }
 

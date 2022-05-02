@@ -18,4 +18,8 @@ export class MediaService {
   deleteObjects(username: string, blogNoteTitle: string, fileNames) {
     return this.fbClient.deleteObjects(username, blogNoteTitle, fileNames);
   }
+
+  fetchPresignedUrl(username: string, blogNoteTitle: string, fileName) {
+    return this.fbClient.fetchPresignedUrl(username, blogNoteTitle, fileName);
+  }
 }

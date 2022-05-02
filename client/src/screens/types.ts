@@ -9,6 +9,7 @@ export class BlogNote {
 
 export class Media {
     id?: string;
-    fileName!: string;
-    blogNoteId!: string;
+    fileName?: string;
+    blogNoteId?: string;
+    url?: string;
 }

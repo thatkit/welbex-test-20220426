@@ -73,8 +73,8 @@ export class FilebaseCustomClient {
     async fetchPresignedUrl(username, blogNoteTitle, fileName) {
         return await s3Client.getSignedUrlPromise('getObject', {
             Bucket: this.Bucket,
-            Key: fileName
-        }).promise();
+            Key: `${username}/${blogNoteTitle}/${fileName}`
+        });
 
             // .then(url => console.log(url))
             // .catch(err => {

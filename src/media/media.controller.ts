@@ -10,7 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MediaService } from './media.service';
 
@@ -51,6 +51,16 @@ export class MediaController {
       req.user.username,
       blogNoteTitle.blogNoteTitle,
       fileNames.fileNames,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('url/:blogNoteTitle')
+  fetchPresignedUrl(@Request() req, @Param() blogNoteTitle, @Body() fileName) {
+    return this.mediaService.fetchPresignedUrl(
+      req.user.username,
+      blogNoteTitle.blogNoteTitle,
+      fileName.fileName,
     );
   }
 }
