@@ -2,18 +2,22 @@ import React from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 import styles from './styles.module.scss';
 
-export const BlogNoteForm = () => {
+export const BlogNoteForm = ({ action, data }: { action: any; data: any }) => {
+    console.log(action, data)
     return (
         <Form>
-            <FormGroup floating>
-                <Input
-                    id='title'
-                    name='title'
-                    placeholder='your title'
-                    type='text'
-                />
-                <Label for='title'>Title</Label>
-            </FormGroup>
+            {
+                action.action === 'create' &&
+                <FormGroup floating>
+                    <Input
+                        id='title'
+                        name='title'
+                        placeholder='your title'
+                        type='text'
+                    />
+                    <Label for='title'>Title</Label>
+                </FormGroup>
+            }
             <FormGroup floating>
                 <Input
                     id='message'

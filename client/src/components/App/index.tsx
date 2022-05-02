@@ -14,7 +14,7 @@ function App() {
       <Navbar data={authorData} />
       <div className={styles.btnWrapper}>
         <BlogNoteModal
-          action={{ action: 'create new' }}
+          action={{ action: 'create' }}
           data={{ title: 'none' }}
         />
       </div>

@@ -14,7 +14,7 @@ export const BlogNoteModal = ({ action, data }: { action: any; data: any }) => {
       <Modal isOpen={isOpen} toggle={() => setIsOpen(false)} centered>
         <ModalHeader>{data.title}</ModalHeader>
         <ModalBody>
-          <BlogNoteForm />
+          <BlogNoteForm action={action} data={data} />
         </ModalBody>
         <ModalFooter>
           <Button color="warning">Save</Button>
