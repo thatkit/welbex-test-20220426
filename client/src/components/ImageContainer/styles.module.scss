@@ -1,0 +1,8 @@
+@use '../../styles/vars';
+
+.imgContainer {
+    margin-bottom: vars.$gap;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
+}
