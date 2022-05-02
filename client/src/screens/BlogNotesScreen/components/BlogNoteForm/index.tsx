@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
-import styles from './styles.module.scss';
 import { FilesInput } from '../FilesInput';
 
 export const BlogNoteForm = ({ action, data }: { action: any; data: any }) => {

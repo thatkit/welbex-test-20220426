@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardImg } from 'reactstrap';
-import { useGlobalState } from '../../screens/globalState';
+import { useGlobalState } from '../../../globalState';
 import styles from './styles.module.scss';
 
 export const Image = ({
