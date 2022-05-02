@@ -1,23 +1,34 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
-import { BlogNote } from './types';
+import { User, BlogNote } from './types';
 import { findAllJson } from '../mockupData/findAll';
 import { mockupUrl } from '../mockupData/url';
 
 export class GlobalState {
-  user: {
-    username: string;
-    password: string;
-  } = {
+  user: User = {
     username: 'client1',
     password: 'pass1',
   };
+
+  accessToken: string = '';
 
   blogNotes: BlogNote[] = findAllJson;
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  /* ~~~ FOR AUTH SCREEN ~~~ */
+
+  registerUser(newUser: User) {
+    // # then client.login() --> save accessToken
+  }
+
+  loginUser(user: User) {
+    // # client.login() --> save accessToken
+  }
+
+  /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
 
   get getUsername() {
     return this.user.username;

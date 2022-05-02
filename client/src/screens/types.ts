@@ -13,3 +13,8 @@ export class Media {
     blogNoteId?: string;
     url?: string;
 }
+
+export class User {
+    username!: string;
+    password!: string;
+}
