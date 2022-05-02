@@ -31,16 +31,6 @@ export class GlobalState {
     this.blogNotes = blogNotes;
   }
 
-  updateBlogNotesWithMediaUrl() {
-    const updatedBlogNotes = this.blogNotes.map((blogNote) => ({
-      ...blogNote,
-      media: blogNote.media?.map((file) => ({
-        url: mockupUrl,
-      })),
-    }));
-    this.setBlogNotes(updatedBlogNotes);
-  }
-
   fetchPresignedUrl(blogNoteTitle: string, fileName: string) {
     return mockupUrl;
   }
