@@ -1,25 +1,13 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container } from 'reactstrap';
-import styles from './styles.module.scss';
-import { Navbar } from '../Navbar';
-import { BlogNoteCloud } from '../BlogNoteCloud';
-import { BlogNoteModal } from '../BlogNoteModal';
-
-const authorData = 'thatkit';
+import { BlogNotesScreen } from '../../screens/BlogNotesScreen';
+import { GlobalState, GlobalStateProvider } from '../../screens/globalState';
 
 function App() {
   return (
-    <Container className={styles.app}>
-      <Navbar data={authorData} />
-      <div className={styles.btnWrapper}>
-        <BlogNoteModal
-          action={{ action: 'create' }}
-          data={{}}
-        />
-      </div>
-      <BlogNoteCloud />
-    </Container>
+    <GlobalStateProvider value={new GlobalState()}>
+      <BlogNotesScreen />
+    </GlobalStateProvider>
   );
 }
 

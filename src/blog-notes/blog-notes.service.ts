@@ -36,8 +36,13 @@ export class BlogNotesService {
     return blogNoteResponse;
   }
 
-  async findAll(userId: string): Promise<BlogNote[]> {
-    return this.blogNoteRepository.find({ userId });
+  async findAll(userId: string): Promise<any> {
+    // return this.blogNoteRepository.find({ relations: ['media'] }); // # obsolete
+    return await this.blogNoteRepository
+      .createQueryBuilder('blog_note')
+      .leftJoinAndSelect('blog_note.media', 'media')
+      .where('blog_note.userId = :userId', { userId })
+      .getMany();
   }
 
   async findOne(id: string): Promise<any> {
