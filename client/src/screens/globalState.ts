@@ -18,6 +18,10 @@ export class GlobalState {
         makeAutoObservable(this);
     }
 
+    get getUsername() {
+        return this.user.username;
+    }
+
     get getBlogNotes() {
         return this.blogNotes;
     }

@@ -8,8 +8,6 @@ import { BlogNoteModal } from '../../components/BlogNoteModal';
 import { observer } from 'mobx-react-lite';
 import { useGlobalState } from '../globalState';
 
-const authorData = 'thatkit';
-
 export const BlogNotesScreen = observer((): JSX.Element => {
   const [state] = useState(useGlobalState());
 
@@ -17,7 +15,7 @@ export const BlogNotesScreen = observer((): JSX.Element => {
   
   return (
     <Container className={styles.app}>
-      <Navbar data={authorData} />
+      <Navbar data={state.getUsername} />
       <div className={styles.btnWrapper}>
         <BlogNoteModal
           action={{ action: 'create' }}
