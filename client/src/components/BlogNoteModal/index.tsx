@@ -12,7 +12,7 @@ export const BlogNoteModal = ({ action, data }: { action: any; data: any }) => {
         {action.action.toUpperCase()}
       </Button>
       <Modal isOpen={isOpen} toggle={() => setIsOpen(false)} centered>
-        <ModalHeader>{data.title}</ModalHeader>
+        <ModalHeader>{data.title || 'New message'}</ModalHeader>
         <ModalBody>
           <BlogNoteForm action={action} data={data} />
         </ModalBody>

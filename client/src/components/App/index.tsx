@@ -15,7 +15,7 @@ function App() {
       <div className={styles.btnWrapper}>
         <BlogNoteModal
           action={{ action: 'create' }}
-          data={{ title: 'none' }}
+          data={{}}
         />
       </div>
       <BlogNoteCloud />

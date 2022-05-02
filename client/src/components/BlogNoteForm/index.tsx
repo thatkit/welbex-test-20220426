@@ -3,7 +3,7 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import styles from './styles.module.scss';
 
 export const BlogNoteForm = ({ action, data }: { action: any; data: any }) => {
-    console.log(action, data)
+    console.log(data)
     return (
         <Form>
             {
@@ -24,6 +24,7 @@ export const BlogNoteForm = ({ action, data }: { action: any; data: any }) => {
                     name='message'
                     placeholder='your message'
                     type='textarea'
+                    value={data.message && data.message}
                 />
                 <Label for='message'>Message</Label>
             </FormGroup>
