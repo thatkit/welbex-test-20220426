@@ -1,5 +1,6 @@
 import { User } from '../screens/types';
 import Cookies from 'js-cookie';
+import { parse } from 'path';
 
 export class apiClient {
   baseUrl: string = 'http://localhost:3001';
@@ -51,11 +52,8 @@ export class apiClient {
       const parsed = await response.json();
       console.log('res parsed:', parsed);
 
-	  if (parsed?.accessToken) {
-		console.log('if: ', parsed?.accessToken);
-		Cookies.set('accesToken', parsed?.accessToken);
-		this.isLoggedIn = true;
-		console.log('if: ', this.isLoggedIn);
+	  if (parsed.accessToken) {
+		Cookies.set('accessToken', parsed.accessToken);
 	  }
 
       return parsed;
@@ -64,7 +62,27 @@ export class apiClient {
     }
   }
 
-  getAuth() {
-	return this.isLoggedIn;
+  async getUsername() {
+    try {
+	  const accessToken: string | undefined = Cookies.get('accessToken');
+
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', `Bearer ${accessToken}`);
+      const options = {
+        method: 'GET',
+        headers: headers,
+      };
+      const endpoint = `${this.baseUrl}/auth/login/`;
+
+      const response = await fetch(endpoint, options);
+      // console.log('res original:', await response.json());
+      const parsed = await response.json();
+      console.log('res parsed:', parsed);
+
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
   }
 }

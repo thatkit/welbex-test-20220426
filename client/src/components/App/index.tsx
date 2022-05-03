@@ -3,17 +3,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BlogNotesScreen } from '../../screens/BlogNotesScreen';
 import { useGlobalState } from '../../screens/globalState';
 import { AuthScreen } from '../../screens/AuthScreen';
+import { observer } from 'mobx-react-lite';
 
-function App() {
+const App = observer(() => {
   const [state] = useState(useGlobalState());
-  const [isAuth] = useState(state.getAuth());
 
+  state.getUsername();
   useEffect(() => {
-    state.getAuth();
-    console.log('isAuth: ', isAuth)
+    console.log(state.isAuth);
   }, [state]);
 
-  return isAuth ? <BlogNotesScreen /> : <AuthScreen />;
-}
+  return state.isAuth ? <BlogNotesScreen /> : <AuthScreen />;
+});
 
 export default App;

@@ -4,11 +4,10 @@ import { User, BlogNote } from './types';
 import { findAllJson } from '../mockupData/findAll';
 import { mockupUrl } from '../mockupData/url';
 import { apiClient } from '../apiClient';
-import Cookies from 'js-cookie';
 
 export class GlobalState {
   client;
-  isAuth;
+  isAuth: boolean = false;
 
   user: User = {
     username: '',
@@ -20,7 +19,6 @@ export class GlobalState {
   constructor() {
     makeAutoObservable(this);
     this.client = new apiClient();
-    this.isAuth = false;
   }
 
   /* ~~~ FOR AUTH SCREEN ~~~ */
@@ -41,22 +39,13 @@ export class GlobalState {
 
   loginUser() {
     this.client.loginUser(this.user);
-    this.getAuth();
   }
 
-  getAuth(): boolean | undefined {
-    if (Cookies.get('accessToken')) {
-      this.isAuth = true;
-      console.log('cookie', this.isAuth)
-    }
-    return this.isAuth;
+  async getUsername() {
+    this.isAuth = await this.client.getUsername();
   }
 
   /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
-
-  get getUsername() {
-    return this.user.username;
-  }
 
   get getBlogNotes() {
     return this.blogNotes;
