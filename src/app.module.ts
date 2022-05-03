@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import 'dotenv/config';
 import { User } from './users/entities/user.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,8 +27,11 @@ import { User } from './users/entities/user.entity';
     }),
     AuthModule,
     UsersModule,
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', '..', 'client', 'public'),
+    // }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  // controllers: [AppController],
+  // providers: [AppService],
 })
 export class AppModule {}

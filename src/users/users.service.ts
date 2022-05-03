@@ -14,6 +14,7 @@ export class UsersService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<ReturnedUserDto> {
+    console.log('se:', createUserDto);
     const { password, ...user } = await this.userRepository.save({
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),

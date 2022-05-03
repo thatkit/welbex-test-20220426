@@ -10,7 +10,7 @@ import { useGlobalState } from '../globalState';
 
 export const BlogNotesScreen = observer((): JSX.Element => {
   const [state] = useState(useGlobalState());
-
+  console.log(state.clientCheck('Hey BlogNotesScreen!!'))
   return (
     <Container className={styles.cnt}>
       <Navbar data={state.getUsername} />

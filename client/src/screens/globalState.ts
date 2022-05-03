@@ -3,11 +3,14 @@ import { makeAutoObservable } from 'mobx';
 import { User, BlogNote } from './types';
 import { findAllJson } from '../mockupData/findAll';
 import { mockupUrl } from '../mockupData/url';
+import { apiClient } from '../apiClient';
 
 export class GlobalState {
+  client;
+
   user: User = {
-    username: 'client1',
-    password: 'pass1',
+    username: '',
+    password: '',
   };
 
   accessToken: string = '';
@@ -16,12 +19,31 @@ export class GlobalState {
 
   constructor() {
     makeAutoObservable(this);
+    this.client = new apiClient();
+  }
+
+  clientCheck(checkVal: any) {
+    this.client.clientTest(checkVal);
+  }
+
+  getHello() {
+    this.client.getHello();
   }
 
   /* ~~~ FOR AUTH SCREEN ~~~ */
 
-  registerUser(newUser: User) {
-    // # then client.login() --> save accessToken
+  setUsername(username: string) {
+    this.user.username = username;
+    // console.log(this.user);
+  }
+
+  setPassword(password: string) {
+    this.user.password = password;
+    // console.log(this.user);
+  }
+
+  registerUser() {
+    this.client.register(this.user);
   }
 
   loginUser(user: User) {
