@@ -4,30 +4,23 @@ import { User, BlogNote } from './types';
 import { findAllJson } from '../mockupData/findAll';
 import { mockupUrl } from '../mockupData/url';
 import { apiClient } from '../apiClient';
+import Cookies from 'js-cookie';
 
 export class GlobalState {
   client;
+  isAuth;
 
   user: User = {
     username: '',
     password: '',
   };
 
-  accessToken: string = '';
-
   blogNotes: BlogNote[] = findAllJson;
 
   constructor() {
     makeAutoObservable(this);
     this.client = new apiClient();
-  }
-
-  clientCheck(checkVal: any) {
-    this.client.clientTest(checkVal);
-  }
-
-  getHello() {
-    this.client.getHello();
+    this.isAuth = false;
   }
 
   /* ~~~ FOR AUTH SCREEN ~~~ */
@@ -43,11 +36,20 @@ export class GlobalState {
   }
 
   registerUser() {
-    this.client.register(this.user);
+    this.client.registerUser(this.user);
   }
 
-  loginUser(user: User) {
-    // # client.login() --> save accessToken
+  loginUser() {
+    this.client.loginUser(this.user);
+    this.getAuth();
+  }
+
+  getAuth(): boolean | undefined {
+    if (Cookies.get('accessToken')) {
+      this.isAuth = true;
+      console.log('cookie', this.isAuth)
+    }
+    return this.isAuth;
   }
 
   /* ~~~ FOR BLOGNOTES SCREEN ~~~ */

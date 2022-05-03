@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BlogNotesScreen } from '../../screens/BlogNotesScreen';
-import { GlobalState, GlobalStateProvider } from '../../screens/globalState';
+import { useGlobalState } from '../../screens/globalState';
 import { AuthScreen } from '../../screens/AuthScreen';
 
 function App() {
-  return (
-    <GlobalStateProvider value={new GlobalState()}>
-      <AuthScreen />
-      {/* <BlogNotesScreen /> */}
-    </GlobalStateProvider>
-  );
+  const [state] = useState(useGlobalState());
+  const [isAuth] = useState(state.getAuth());
+
+  useEffect(() => {
+    state.getAuth();
+    console.log('isAuth: ', isAuth)
+  }, [state]);
+
+  return isAuth ? <BlogNotesScreen /> : <AuthScreen />;
 }
 
 export default App;

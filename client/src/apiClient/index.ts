@@ -1,44 +1,70 @@
-import { User } from "../screens/types";
+import { User } from '../screens/types';
+import Cookies from 'js-cookie';
 
 export class apiClient {
   baseUrl: string = 'http://localhost:3001';
-	headers: Headers = new Headers();
+  isLoggedIn: boolean = false;
 
   // setToken(accessToken: string) {
   //   return {
   //     ...this.headers,
-	// 		Authorization: `Bearer ${accessToken}`,
+  // 		Authorization: `Bearer ${accessToken}`,
   //   };
-	// 	// # should update this.headers instead
+  // 	// # should update this.headers instead
   // }
 
-	register = async (newUser: User) => {
-		try {
-			const headers = new Headers();
-			headers.append('Content-Type', "application/json");
-			const options = {
-				method: 'POST',
-				headers: headers,
-				body: JSON.stringify({ username: `${Math.random()}`, password: `${Math.random()}` }),
-			}
-			const endpoint = `${this.baseUrl}/auth/register/`;
-			// const request = new Request(endpoint, options);
-			const response = await fetch(endpoint, options);
-			// console.log('res original:', await response.json());
-			const parsed = await response.json();
-			console.log('res parsed:', parsed);
-			return parsed;
-		} catch(err) {
-			console.log(err);
-		}
-	}
+  async registerUser(newUser: User) {
+    try {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const options = {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(newUser),
+      };
+      const endpoint = `${this.baseUrl}/auth/register/`;
 
-	clientTest(checkVal: any) {
-		console.log('Test success:', checkVal);
-	}
-	async getHello() {
-		const response = await fetch('http://localhost:3000');
-		const parsed = await response.text();
-		console.log(parsed);
-	}
+      const response = await fetch(endpoint, options);
+      // console.log('res original:', await response.json());
+      const parsed = await response.json();
+      console.log('res parsed:', parsed);
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
+  }
+
+  async loginUser(user: User) {
+    try {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+    //   headers.append('Authorization', `Bearer ${this.accessToken}`);
+      const options = {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(user),
+      };
+      const endpoint = `${this.baseUrl}/auth/login/`;
+
+      const response = await fetch(endpoint, options);
+      // console.log('res original:', await response.json());
+      const parsed = await response.json();
+      console.log('res parsed:', parsed);
+
+	  if (parsed?.accessToken) {
+		console.log('if: ', parsed?.accessToken);
+		Cookies.set('accesToken', parsed?.accessToken);
+		this.isLoggedIn = true;
+		console.log('if: ', this.isLoggedIn);
+	  }
+
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
+  }
+
+  getAuth() {
+	return this.isLoggedIn;
+  }
 }

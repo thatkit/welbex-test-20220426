@@ -5,8 +5,6 @@ import styles from './styles.module.scss';
 
 export const AuthScreen = () => {
   const [state] = useState(useGlobalState());
-  // state.getHello() // # test
-  state.registerUser() // # test
 
   return (
     <Container className={styles.cnt}>
@@ -30,8 +28,12 @@ export const AuthScreen = () => {
           /><Label for="password">Password</Label>
         </FormGroup>
         <div className={styles.btnWrapper}>
-          <Button onClick={(e) => state.registerUser()}>Register</Button>
-          <Button>Login</Button>
+          <Button
+            onClick={() => state.registerUser()}
+          >Register</Button>
+          <Button
+            onClick={() => state.loginUser()}
+          >Login</Button>
         </div>
       </Form>
     </Container>

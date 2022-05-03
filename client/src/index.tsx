@@ -2,13 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App/index';
 import reportWebVitals from './reportWebVitals';
+import { GlobalState, GlobalStateProvider } from './screens/globalState';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <GlobalStateProvider value={new GlobalState()}>
+      <App />
+    </GlobalStateProvider>
   </React.StrictMode>
 );
 
