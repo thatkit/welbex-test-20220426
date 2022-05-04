@@ -18,3 +18,10 @@ export class User {
     username!: string;
     password!: string;
 }
+
+export class FetchOptions {
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    contentType?: 'application/json' | 'multipart/form-data';
+    accessToken?: string;
+    body?: any;
+}

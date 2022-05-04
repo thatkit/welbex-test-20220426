@@ -1,22 +1,33 @@
-import { User } from '../types';
+import { FetchOptions, User } from '../types';
 import Cookies from 'js-cookie';
 
 export class apiClient {
   baseUrl: string = 'http://localhost:3001';
   isLoggedIn: boolean = false;
+  headers = new Headers();
+  accessToken: string | undefined = Cookies.get('accessToken');
+
+  setOptions(options?: FetchOptions) {
+    return {
+      method: options?.method || 'GET',
+      headers: {
+        ...this.headers,
+        'Content-Type': options?.contentType || 'application/json',
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      body: JSON.stringify(options?.body) || null, // # should be different
+    };
+  }
 
   async registerUser(newUser: User) {
     try {
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      const options = {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(newUser),
-      };
-      const endpoint = `${this.baseUrl}/auth/register/`;
-
-      const response = await fetch(endpoint, options);
+      const response = await fetch(
+        `${this.baseUrl}/auth/register/`,
+        this.setOptions({
+          method: 'POST',
+          body: newUser,
+        }),
+      );
       // console.log('res original:', await response.json());
       const parsed = await response.json();
       // console.log('res parsed:', parsed);
@@ -28,16 +39,13 @@ export class apiClient {
 
   async loginUser(user: User) {
     try {
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      const options = {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(user),
-      };
-      const endpoint = `${this.baseUrl}/auth/login/`;
-
-      const response = await fetch(endpoint, options);
+      const response = await fetch(
+        `${this.baseUrl}/auth/login/`,
+        this.setOptions({
+          method: 'POST',
+          body: user,
+        }),
+      );
       // console.log('res original:', await response.json());
       const parsed = await response.json();
       // console.log('res parsed:', parsed);
@@ -49,18 +57,12 @@ export class apiClient {
 
   async getUsername() {
     try {
-      const accessToken: string | undefined = Cookies.get('accessToken');
-
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('Authorization', `Bearer ${accessToken}`);
-      const options = {
-        method: 'GET',
-        headers: headers,
-      };
-      const endpoint = `${this.baseUrl}/auth/login/`;
-
-      const response = await fetch(endpoint, options);
+      const response = await fetch(
+        `${this.baseUrl}/auth/login/`,
+        this.setOptions({
+          accessToken: this.accessToken,
+        }),
+      );
       // console.log('res original:', response);
 
       if (!response.ok) {
