@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Form, FormGroup, Input, Label, Button } from 'reactstrap';
-import { useAuthState } from '../../state/authState';
 import styles from './styles.module.scss';
+import { useAuthState } from '../../state/authState';
 
 export const AuthScreen = () => {
   const [state] = useState(useAuthState());

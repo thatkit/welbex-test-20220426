@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
+import Cookies from 'js-cookie';
 import { User } from '../types';
 import { apiClient } from '../api';
-import Cookies from 'js-cookie';
 
 export class AuthState {
   client;
@@ -41,8 +41,8 @@ export class AuthState {
   async loginUser() {
     const accessToken = await this.client.loginUser(this.userInputs);
     
-	  if (accessToken) {
-      Cookies.set('accessToken', accessToken);
+	  if (accessToken?.accessToken) {
+      Cookies.set('accessToken', accessToken?.accessToken);
       this.setAuthorised();
     }
   }
@@ -52,6 +52,7 @@ export class AuthState {
       const username = await this.client.getUsername();
       this.setAuthorised();
       this.setUsername = username;
+      // console.log('validateToken authState: ', this.setUsername);
     }
   }
 

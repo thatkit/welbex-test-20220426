@@ -30,7 +30,6 @@ export class apiClient {
     try {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
-    //   headers.append('Authorization', `Bearer ${this.accessToken}`);
       const options = {
         method: 'POST',
         headers: headers,
@@ -62,10 +61,9 @@ export class apiClient {
       const endpoint = `${this.baseUrl}/auth/login/`;
 
       const response = await fetch(endpoint, options);
-      // console.log('res original:', await response.json());
+      console.log('res original:', response);
       const parsed = await response.json();
       console.log('res parsed:', parsed);
-
       return parsed;
     } catch (err) {
       console.log(err); // # need a better error handler
