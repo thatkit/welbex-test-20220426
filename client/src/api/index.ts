@@ -5,7 +5,6 @@ export class apiClient {
   baseUrl: string = 'http://localhost:3001';
   isLoggedIn: boolean = false;
   headers = new Headers();
-  accessToken: string | undefined = Cookies.get('accessToken');
 
   setOptions(options?: FetchOptions) {
     return {
@@ -13,7 +12,7 @@ export class apiClient {
       headers: {
         ...this.headers,
         'Content-Type': options?.contentType || 'application/json',
-        Authorization: `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${options?.accessToken}`,
       },
       body: JSON.stringify(options?.body) || null, // # should be different
     };
@@ -60,17 +59,17 @@ export class apiClient {
       const response = await fetch(
         `${this.baseUrl}/auth/login/`,
         this.setOptions({
-          accessToken: this.accessToken,
+          accessToken: Cookies.get('accessToken'),
         }),
       );
-      console.log('res original:', response.text(), await response.text());
-
+      // console.log('res original:', response);
+      // # 1 problem here
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
 
-      const parsed = await response.text();
-      console.log('res parsed:', parsed);
+      const parsed = await response.json();
+      // console.log('res parsed:', parsed);
       return parsed;
     } catch (err) {
       console.log(err); // # need a better error handler
@@ -82,10 +81,10 @@ export class apiClient {
       const response = await fetch(
         `${this.baseUrl}/blog-notes`,
         this.setOptions({
-          accessToken: this.accessToken,
+          accessToken: Cookies.get('accessToken'),
         }),
       );
-      console.log('res original:', response);
+      // console.log('res original:', response);
 
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);

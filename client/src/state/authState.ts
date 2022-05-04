@@ -56,12 +56,11 @@ export class AuthState {
   async validateToken() {
     if (Cookies.get('accessToken')) {
       const response = await this.client.getUsername();
-      console.log('validateToken():', response)
 
-      if (Boolean(response)) {
-        console.log('this.setAuthorised();', response)
+      if (response.username) {
+        // console.log('this.setAuthorised();', response)
         this.setAuthorised();
-        this.setUsername = await response;
+        this.setUsername = response.username;
       }
     }
   }

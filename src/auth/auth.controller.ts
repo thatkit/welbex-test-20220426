@@ -37,6 +37,6 @@ export class AuthController {
   @Get('login')
   getUsername(@Request() req) {
     console.log('Auth getUsername GET:', req.user.username);
-    return req.user.username;
+    return { username: req.user.username };
   }
 }

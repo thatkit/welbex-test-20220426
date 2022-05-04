@@ -7,7 +7,6 @@ import { useGlobalState } from '../../state/globalState';
 import { Navbar } from './components/Navbar';
 import { BlogNoteCloud } from './components/BlogNoteCloud';
 import { BlogNoteModal } from './components/BlogNoteModal';
-import { useAuthState } from '../../state/authState';
 
 export const BlogNotesScreen = observer((): JSX.Element => {
   const [state] = useState(useGlobalState());
