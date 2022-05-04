@@ -1,18 +1,9 @@
-import { User } from '../screens/types';
+import { User } from '../types';
 import Cookies from 'js-cookie';
-import { parse } from 'path';
 
 export class apiClient {
   baseUrl: string = 'http://localhost:3001';
   isLoggedIn: boolean = false;
-
-  // setToken(accessToken: string) {
-  //   return {
-  //     ...this.headers,
-  // 		Authorization: `Bearer ${accessToken}`,
-  //   };
-  // 	// # should update this.headers instead
-  // }
 
   async registerUser(newUser: User) {
     try {
@@ -28,7 +19,7 @@ export class apiClient {
       const response = await fetch(endpoint, options);
       // console.log('res original:', await response.json());
       const parsed = await response.json();
-      console.log('res parsed:', parsed);
+      // console.log('res parsed:', parsed);
       return parsed;
     } catch (err) {
       console.log(err); // # need a better error handler
@@ -50,12 +41,7 @@ export class apiClient {
       const response = await fetch(endpoint, options);
       // console.log('res original:', await response.json());
       const parsed = await response.json();
-      console.log('res parsed:', parsed);
-
-	  if (parsed.accessToken) {
-		Cookies.set('accessToken', parsed.accessToken);
-	  }
-
+      // console.log('res parsed:', parsed);
       return parsed;
     } catch (err) {
       console.log(err); // # need a better error handler
@@ -64,7 +50,7 @@ export class apiClient {
 
   async getUsername() {
     try {
-	  const accessToken: string | undefined = Cookies.get('accessToken');
+      const accessToken: string | undefined = Cookies.get('accessToken');
 
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');

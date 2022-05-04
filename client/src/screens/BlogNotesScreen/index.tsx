@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Navbar } from './components/Navbar';
 import { BlogNoteCloud } from './components/BlogNoteCloud';
 import { BlogNoteModal } from './components/BlogNoteModal';
-import { useGlobalState } from '../globalState';
+import { useGlobalState } from '../../state/globalState';
 
 export const BlogNotesScreen = observer((): JSX.Element => {
   const [state] = useState(useGlobalState());

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Form, FormGroup, Input, Label, Button } from 'reactstrap';
-import { useGlobalState } from '../globalState';
+import { useAuthState } from '../../state/authState';
 import styles from './styles.module.scss';
 
 export const AuthScreen = () => {
-  const [state] = useState(useGlobalState());
+  const [state] = useState(useAuthState());
 
   return (
     <Container className={styles.cnt}>

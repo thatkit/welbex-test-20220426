@@ -2,16 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App/index';
 import reportWebVitals from './reportWebVitals';
-import { GlobalState, GlobalStateProvider } from './screens/globalState';
+import { AuthState, AuthStateProvider } from './state/authState';
+import { GlobalState, GlobalStateProvider } from './state/globalState';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <GlobalStateProvider value={new GlobalState()}>
-      <App />
-    </GlobalStateProvider>
+    <AuthStateProvider value={new AuthState()}>
+      <GlobalStateProvider value={new GlobalState()}>
+        <App />
+      </GlobalStateProvider>
+    </AuthStateProvider>
   </React.StrictMode>
 );
 
