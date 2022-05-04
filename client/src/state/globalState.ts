@@ -9,17 +9,39 @@ export class GlobalState {
   blogNotes: BlogNote[] = [];
   username: string | undefined = '';
 
+  blogNoteInputs = {
+    title: '',
+    message: '',
+    mediaRefs: [],
+  };
+
   constructor() {
     makeAutoObservable(this);
     this.client = new apiClient();
+  }
+
+  /* ~~~ FORM INPUT CONTROL ~~~ */
+
+  setTitleInput(title: string) {
+    this.blogNoteInputs.title = title;
+  }
+
+  setMessageInput(message: string) {
+    this.blogNoteInputs.message = message;
   }
 
   /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
 
   async setBlogNotes() {
     const response = await this.client.getBlogNotes();
-    console.log('state: ', response);
+    // console.log('state: ', response);
     this.blogNotes = await response;
+  }
+
+  async saveBlogNote() {
+    const response = await this.client.saveBlogNote(this.blogNoteInputs);
+    // console.log('newBlognote res: ', response);
+    await this.setBlogNotes();
   }
 
   fetchPresignedUrl(blogNoteTitle: string, fileName: string) {

@@ -25,3 +25,9 @@ export class FetchOptions {
     accessToken?: string;
     body?: any;
 }
+
+export class BlogNoteInput {
+    title!: string;
+    message!: string;
+    mediaRefs!: string[];
+}

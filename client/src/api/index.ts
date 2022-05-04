@@ -1,4 +1,4 @@
-import { FetchOptions, User } from '../types';
+import { BlogNoteInput, FetchOptions, User } from '../types';
 import Cookies from 'js-cookie';
 
 export class apiClient {
@@ -17,6 +17,8 @@ export class apiClient {
       body: JSON.stringify(options?.body) || null, // # should be different
     };
   }
+
+  /* ~~~ FOR AUTH SCREEN ~~~ */
 
   async registerUser(newUser: User) {
     try {
@@ -54,6 +56,8 @@ export class apiClient {
     }
   }
 
+  /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
+
   async getUsername() {
     try {
       const response = await fetch(
@@ -82,6 +86,30 @@ export class apiClient {
         `${this.baseUrl}/blog-notes`,
         this.setOptions({
           accessToken: Cookies.get('accessToken'),
+        }),
+      );
+      // console.log('res original:', response);
+
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
+      const parsed = await response.json();
+      // console.log('res parsed:', parsed);
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
+  }
+
+  async saveBlogNote(blogNote: BlogNoteInput) {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/blog-notes`,
+        this.setOptions({
+          method: 'POST',
+          accessToken: Cookies.get('accessToken'),
+          body: blogNote,
         }),
       );
       // console.log('res original:', response);

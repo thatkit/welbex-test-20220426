@@ -21,13 +21,14 @@ export class BlogNotesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createBlogNoteDto: CreateBlogNoteDto, @Request() req) {
+    // console.log('create co: ', createBlogNoteDto, req.user.id);
     return this.blogNotesService.create(createBlogNoteDto, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Request() req) {
-    console.log('findAll co: ', req.user.id);
+    // console.log('findAll co: ', req.user.id);
     return this.blogNotesService.findAll(req.user.id);
   }
 
