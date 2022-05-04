@@ -36,6 +36,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('login')
   getUsername(@Request() req) {
+    console.log('Auth getUsername GET:', req.user.username);
     return req.user.username;
   }
 }

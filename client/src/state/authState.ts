@@ -22,12 +22,12 @@ export class AuthState {
 
   /* ~~~ FORM INPUT CONTROL ~~~ */
 
-  setUsername(username: string) {
+  setUsernameInput(username: string) {
     this.userInputs.username = username;
     // console.log(this.userInputs);
   }
 
-  setPassword(password: string) {
+  setPasswordInput(password: string) {
     this.userInputs.password = password;
     // console.log(this.userInputs);
   }
@@ -41,13 +41,32 @@ export class AuthState {
   async loginUser() {
     const accessToken = await this.client.loginUser(this.userInputs);
     
-	  if (accessToken) Cookies.set('accessToken', accessToken);
+	  if (accessToken) {
+      Cookies.set('accessToken', accessToken);
+      this.setAuthorised();
+    }
   }
 
-  /* ~~~ SET isAuthorised ~~~ */
+  async validateToken() {
+    if (Cookies.get('accessToken')) {
+      const username = await this.client.getUsername();
+      this.setAuthorised();
+      this.setUsername = username;
+    }
+  }
+
+  /* ~~~ SETTERS/GETTERS ~~~ */
 
   setAuthorised() {
     this.isAuthorised = true;
+  }
+
+  set setUsername(username: string) {
+    this.username = username;
+  }
+
+  get getUsername() {
+    return this.username;
   }
 
 }
