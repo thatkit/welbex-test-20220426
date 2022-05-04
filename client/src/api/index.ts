@@ -63,7 +63,29 @@ export class apiClient {
           accessToken: this.accessToken,
         }),
       );
-      // console.log('res original:', response);
+      console.log('res original:', response.text(), await response.text());
+
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
+      const parsed = await response.text();
+      console.log('res parsed:', parsed);
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
+  }
+
+  async getBlogNotes() {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/blog-notes`,
+        this.setOptions({
+          accessToken: this.accessToken,
+        }),
+      );
+      console.log('res original:', response);
 
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);

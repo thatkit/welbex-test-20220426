@@ -1,13 +1,12 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
-import { User, BlogNote } from '../types';
-import { findAllJson } from '../mockupData/findAll';
+import { BlogNote } from '../types';
 import { mockupUrl } from '../mockupData/url';
 import { apiClient } from '../api';
 
 export class GlobalState {
   client;
-  blogNotes: BlogNote[] = findAllJson;
+  blogNotes: BlogNote[] = [];
   username: string | undefined = '';
 
   constructor() {
@@ -17,12 +16,10 @@ export class GlobalState {
 
   /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
 
-  get getBlogNotes() {
-    return this.blogNotes;
-  }
-
-  setBlogNotes(blogNotes: BlogNote[]) {
-    this.blogNotes = blogNotes;
+  async setBlogNotes() {
+    const response = await this.client.getBlogNotes();
+    console.log('state: ', response);
+    this.blogNotes = await response;
   }
 
   fetchPresignedUrl(blogNoteTitle: string, fileName: string) {
@@ -32,6 +29,13 @@ export class GlobalState {
   get getUsername(): string | undefined {
     return this.username;
   }
+
+  /* ~~~ SETTERS & GETTERS ~~~ */
+
+  get getBlogNotes() {
+    return this.blogNotes;
+  }
+
 }
 
 export const GlobalStateContext = createContext(new GlobalState());

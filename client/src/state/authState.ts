@@ -56,10 +56,12 @@ export class AuthState {
   async validateToken() {
     if (Cookies.get('accessToken')) {
       const response = await this.client.getUsername();
+      console.log('validateToken():', response)
 
-      if (response) {
+      if (Boolean(response)) {
+        console.log('this.setAuthorised();', response)
         this.setAuthorised();
-        this.setUsername = response.username;
+        this.setUsername = await response;
       }
     }
   }
@@ -74,7 +76,7 @@ export class AuthState {
     this.isAuthorised = false;
   }
 
-  set setUsername(username: string) {
+  set setUsername(username: string | undefined) {
     this.username = username;
   }
 

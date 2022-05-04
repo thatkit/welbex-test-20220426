@@ -27,6 +27,7 @@ export class BlogNotesController {
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Request() req) {
+    console.log('findAll co: ', req.user.id);
     return this.blogNotesService.findAll(req.user.id);
   }
 
