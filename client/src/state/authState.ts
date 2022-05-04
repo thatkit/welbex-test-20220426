@@ -24,12 +24,10 @@ export class AuthState {
 
   setUsernameInput(username: string) {
     this.userInputs.username = username;
-    // console.log(this.userInputs);
   }
 
   setPasswordInput(password: string) {
     this.userInputs.password = password;
-    // console.log(this.userInputs);
   }
 
   /* ~~~ REGISTER/LOGIN ~~~ */
@@ -57,10 +55,12 @@ export class AuthState {
 
   async validateToken() {
     if (Cookies.get('accessToken')) {
-      const username = await this.client.getUsername();
-      this.setAuthorised();
-      this.setUsername = username;
-      // console.log('validateToken authState: ', this.setUsername);
+      const response = await this.client.getUsername();
+
+      if (response) {
+        this.setAuthorised();
+        this.setUsername = response.username;
+      }
     }
   }
 

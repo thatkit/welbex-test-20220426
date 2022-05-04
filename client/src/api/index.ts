@@ -62,6 +62,11 @@ export class apiClient {
 
       const response = await fetch(endpoint, options);
       // console.log('res original:', response);
+
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
       const parsed = await response.json();
       // console.log('res parsed:', parsed);
       return parsed;
