@@ -61,9 +61,9 @@ export class apiClient {
       const endpoint = `${this.baseUrl}/auth/login/`;
 
       const response = await fetch(endpoint, options);
-      console.log('res original:', response);
+      // console.log('res original:', response);
       const parsed = await response.json();
-      console.log('res parsed:', parsed);
+      // console.log('res parsed:', parsed);
       return parsed;
     } catch (err) {
       console.log(err); // # need a better error handler

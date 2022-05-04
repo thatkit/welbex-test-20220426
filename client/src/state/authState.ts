@@ -35,7 +35,15 @@ export class AuthState {
   /* ~~~ REGISTER/LOGIN ~~~ */
 
   async registerUser() {
-    this.username = await this.client.registerUser(this.userInputs);
+    const response = await this.client.registerUser(this.userInputs);
+
+    if (!response?.username) { // # should be more elegan
+      this.setUnauthorised();
+      return null;
+    }
+
+    await this.loginUser();
+    this.username = response;
   }
 
   async loginUser() {
@@ -60,6 +68,10 @@ export class AuthState {
 
   setAuthorised() {
     this.isAuthorised = true;
+  }
+
+  setUnauthorised() {
+    this.isAuthorised = false;
   }
 
   set setUsername(username: string) {
