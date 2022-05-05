@@ -48,16 +48,18 @@ export class GlobalState {
     return mockupUrl;
   }
 
+  /* ~~~ SETTERS & GETTERS ~~~ */
+
   get getUsername(): string | undefined {
     return this.username;
   }
 
-  /* ~~~ SETTERS & GETTERS ~~~ */
-
   get getBlogNotes() {
-    return this.blogNotes;
+    return this.blogNotes.slice().sort(
+      (prev, next) =>
+      new Date(next.date).getTime() - new Date(prev.date).getTime(),
+    );
   }
-
 }
 
 export const GlobalStateContext = createContext(new GlobalState());
