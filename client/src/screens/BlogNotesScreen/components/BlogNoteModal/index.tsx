@@ -18,7 +18,7 @@ export const BlogNoteModal = observer(
         <Modal isOpen={isOpen} toggle={() => setIsOpen(false)} centered>
           <ModalHeader>{data.title || 'New message'}</ModalHeader>
           <ModalBody>
-            <BlogNoteForm action={action} data={data} />
+            <BlogNoteForm data={data} />
           </ModalBody>
           <ModalFooter>
             <Button

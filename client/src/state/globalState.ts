@@ -10,6 +10,7 @@ export class GlobalState {
   username: string | undefined = '';
 
   blogNoteInputs = {
+    id: '',
     title: '',
     message: '',
     mediaRefs: [],
@@ -21,6 +22,11 @@ export class GlobalState {
   }
 
   /* ~~~ FORM INPUT CONTROL ~~~ */
+
+  setIdInput(id: string) {
+    if (!Boolean(this.blogNoteInputs.id)) return this.blogNoteInputs.id = id;
+    console.log('setIdString');
+  }
 
   setTitleInput(title: string) {
     this.blogNoteInputs.title = title;
@@ -39,8 +45,12 @@ export class GlobalState {
   }
 
   async saveBlogNote() {
-    const response = await this.client.saveBlogNote(this.blogNoteInputs);
-    // console.log('newBlognote res: ', response);
+    await this.client.saveBlogNote(this.blogNoteInputs);
+    await this.setBlogNotes();
+  }
+
+  async updateBlogNote() {
+    await this.client.updateBlogNote(this.blogNoteInputs, 'hardcode');
     await this.setBlogNotes();
   }
 
