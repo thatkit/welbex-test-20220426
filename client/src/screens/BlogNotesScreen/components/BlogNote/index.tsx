@@ -11,7 +11,7 @@ export const BlogNote = observer(({ data }: { data: any }) => {
   // # any
   const action = {
     action: 'create',
-  };
+  }; // # what for?
 
   const [state] = useState(useGlobalState());
 

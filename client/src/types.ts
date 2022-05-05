@@ -21,7 +21,6 @@ export class User {
 
 export class FetchOptions {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    contentType?: 'application/json' | 'multipart/form-data';
     accessToken?: string;
     body?: any;
 }

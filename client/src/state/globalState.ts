@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import { BlogNote } from '../types';
 import { mockupUrl } from '../mockupData/url';
-import { apiClient } from '../api';
+import { apiTextClient } from '../api/textClient';
 
 export class GlobalState {
   client;
@@ -18,7 +18,7 @@ export class GlobalState {
 
   constructor() {
     makeAutoObservable(this);
-    this.client = new apiClient();
+    this.client = new apiTextClient();
   }
 
   /* ~~~ FORM INPUT CONTROL ~~~ */
@@ -40,7 +40,7 @@ export class GlobalState {
     this.blogNoteInputs.message = message;
   }
 
-  /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
+  /* ~~~ TEXTUAL CRUD ~~~ */
 
   async setBlogNotes() {
     const response = await this.client.getBlogNotes();

@@ -1,7 +1,7 @@
 import { BlogNoteInput, FetchOptions, User } from '../types';
 import Cookies from 'js-cookie';
 
-export class apiClient {
+export class apiTextClient {
   baseUrl: string = 'http://localhost:3001';
   isLoggedIn: boolean = false;
   headers = new Headers();
@@ -11,7 +11,7 @@ export class apiClient {
       method: options?.method || 'GET',
       headers: {
         ...this.headers,
-        'Content-Type': options?.contentType || 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${options?.accessToken}`,
       },
       body: JSON.stringify(options?.body) || null, // # should be different
@@ -56,7 +56,7 @@ export class apiClient {
     }
   }
 
-  /* ~~~ FOR BLOGNOTES SCREEN ~~~ */
+  /* ~~~ FOR TEXTUAL CRUD ~~~ */
 
   async getUsername() {
     try {
@@ -171,5 +171,5 @@ export class apiClient {
     } catch (err) {
       console.log(err); // # need a better error handler
     }
-  }
+  }  
 }
