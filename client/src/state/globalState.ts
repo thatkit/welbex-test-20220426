@@ -25,7 +25,11 @@ export class GlobalState {
 
   setIdInput(id: string) {
     if (!Boolean(this.blogNoteInputs.id)) return this.blogNoteInputs.id = id;
-    console.log('setIdString');
+    console.log('setIdInput');
+  }
+
+  emptyIdInput() {
+    this.blogNoteInputs.id = '';
   }
 
   setTitleInput(title: string) {
@@ -50,7 +54,12 @@ export class GlobalState {
   }
 
   async updateBlogNote() {
-    await this.client.updateBlogNote(this.blogNoteInputs, 'hardcode');
+    await this.client.updateBlogNote(this.blogNoteInputs, this.blogNoteInputs.id);
+    await this.setBlogNotes();
+  }
+
+  async deleteBlogNote() {
+    await this.client.deleteBlogNote(this.blogNoteInputs.id);
     await this.setBlogNotes();
   }
 

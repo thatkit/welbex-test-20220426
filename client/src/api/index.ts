@@ -149,4 +149,27 @@ export class apiClient {
       console.log(err); // # need a better error handler
     }
   }
+
+  async deleteBlogNote(blogNoteId: string) {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/blog-notes/${blogNoteId}`,
+        this.setOptions({
+          method: 'DELETE',
+          accessToken: Cookies.get('accessToken'),
+        }),
+      );
+      // console.log('res original:', response);
+
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
+      const parsed = await response.json();
+      // console.log('res parsed:', parsed);
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
+  }
 }

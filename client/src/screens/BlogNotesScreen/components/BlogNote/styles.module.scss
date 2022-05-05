@@ -3,11 +3,28 @@
 .card {
     min-width: 33%;
     border-width: 0;
-
+    
     .cardBorder {
         padding: vars.$gap;
         border: 2px solid #6c757d;
         border-radius: vars.$bradius;
+        
+        .closeButton {
+            height: 2rem;
+            width: 2rem;
+            padding: 4px;
+            position: relative;
+            left: calc(100% - vars.$gap);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+    
+            .closeIcon {
+                height: 80%;
+                width: 80%;
+            }
+        }
         
         .cardBody {
             height: 100%;

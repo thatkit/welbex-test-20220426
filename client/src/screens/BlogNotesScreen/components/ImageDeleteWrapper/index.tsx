@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './styles.module.scss';
-import closeIcon from './cross-icon.svg';
+import closeIcon from '../../../../assets/cross-icon.svg';
 
 export const ImageDeleteWrapper = ({
   children,

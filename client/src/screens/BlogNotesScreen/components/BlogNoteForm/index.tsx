@@ -15,8 +15,7 @@ export const BlogNoteForm = observer(
           <Input
             id="title"
             name="title"
-            placeholder="your title"
-            value={data.title}
+            placeholder={data.title || 'title'}
             onChange={({ target }) => {
               state.setTitleInput(target.value);
               state.setIdInput(data.id);
@@ -28,9 +27,8 @@ export const BlogNoteForm = observer(
           <Input
             id="message"
             name="message"
-            placeholder="your message"
+            placeholder={data.message || 'message'}
             type="textarea"
-            value={data.message}
             onChange={({ target }) => state.setMessageInput(target.value)}
           />
           <Label for="message">Message</Label>
