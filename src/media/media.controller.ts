@@ -20,46 +20,46 @@ export class MediaController {
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files'))
-  @Post(':blogNoteTitle')
+  @Post(':blogNoteId')
   create(
     @Request() req,
-    @Param() blogNoteTitle,
+    @Param() blogNoteId,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    // console.log('co blogNoteTitle:', blogNoteTitle)
+    // console.log('co blogNoteId:', blogNoteId)
     return this.mediaService.createObjects(
       req.user.username,
-      blogNoteTitle.blogNoteTitle,
+      blogNoteId.blogNoteId,
       files,
     );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':blogNoteTitle')
-  findAllObjects(@Request() req, @Param() blogNoteTitle) {
-    // console.log('co blogNoteTitle:', blogNoteTitle);
+  @Get(':blogNoteId')
+  findAllObjects(@Request() req, @Param() blogNoteId) {
+    // console.log('co blogNoteId:', blogNoteId);
     return this.mediaService.findAllObjects(
       req.user.username,
-      blogNoteTitle.blogNoteTitle,
+      blogNoteId.blogNoteId,
     );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':blogNoteTitle')
-  delete(@Request() req, @Param() blogNoteTitle, @Body() fileNames) {
+  @Delete(':blogNoteId')
+  delete(@Request() req, @Param() blogNoteId, @Body() fileNames) {
     return this.mediaService.deleteObjects(
       req.user.username,
-      blogNoteTitle.blogNoteTitle,
+      blogNoteId.blogNoteId,
       fileNames.fileNames,
     );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('url/:blogNoteTitle')
-  fetchPresignedUrl(@Request() req, @Param() blogNoteTitle, @Body() fileName) {
+  @Get('url/:blogNoteId')
+  fetchPresignedUrl(@Request() req, @Param() blogNoteId, @Body() fileName) {
     return this.mediaService.fetchPresignedUrl(
       req.user.username,
-      blogNoteTitle.blogNoteTitle,
+      blogNoteId.blogNoteId,
       fileName.fileName,
     );
   }

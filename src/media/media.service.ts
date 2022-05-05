@@ -5,21 +5,21 @@ import { FilebaseCustomClient } from './FilebaseCustomClient';
 export class MediaService {
   constructor(private readonly fbClient: FilebaseCustomClient) {}
 
-  createObjects(username, blogNoteTitle, files) {
-    // console.log('se blogNoteTitle:', blogNoteTitle)
-    return this.fbClient.createObjects(username, blogNoteTitle, files);
+  createObjects(username, blogNoteId, files) {
+    // console.log('se blogNoteId:', blogNoteId)
+    return this.fbClient.createObjects(username, blogNoteId, files);
   }
 
-  findAllObjects(username: string, blogNoteTitle: string) {
-    // console.log('se blogNoteTitle:', blogNoteTitle)
-    return this.fbClient.findAllObjects(username, blogNoteTitle);
+  findAllObjects(username: string, blogNoteId: string) {
+    // console.log('se blogNoteId:', blogNoteId)
+    return this.fbClient.findAllObjects(username, blogNoteId);
   }
 
-  deleteObjects(username: string, blogNoteTitle: string, fileNames) {
-    return this.fbClient.deleteObjects(username, blogNoteTitle, fileNames);
+  deleteObjects(username: string, blogNoteId: string, fileNames) {
+    return this.fbClient.deleteObjects(username, blogNoteId, fileNames);
   }
 
-  fetchPresignedUrl(username: string, blogNoteTitle: string, fileName) {
-    return this.fbClient.fetchPresignedUrl(username, blogNoteTitle, fileName);
+  fetchPresignedUrl(username: string, blogNoteId: string, fileName) {
+    return this.fbClient.fetchPresignedUrl(username, blogNoteId, fileName);
   }
 }
