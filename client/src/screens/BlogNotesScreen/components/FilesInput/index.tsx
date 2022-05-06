@@ -15,7 +15,7 @@ export const FilesInput = ({ data }: { data: any }) => {
           name="file"
           placeholder="your file"
           type="file"
-          onInput={() => console.log('filesQty')}
+          onInput={({ target }) => console.log(target)} // # onSubmit somewhere
         />
       </FormGroup>
     </>
