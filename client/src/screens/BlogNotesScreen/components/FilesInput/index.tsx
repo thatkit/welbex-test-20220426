@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormGroup, Input } from 'reactstrap';
+import { convertFiles } from '../../../../tools/convertFiles';
 import { ImageContainer } from '../ImageContainer';
 
 export const FilesInput = ({ data }: { data: any }) => {
@@ -15,7 +16,8 @@ export const FilesInput = ({ data }: { data: any }) => {
           name="file"
           placeholder="your file"
           type="file"
-          onInput={({ target }) => console.log(target)} // # onSubmit somewhere
+          multiple={true}
+          onChange={convertFiles}
         />
       </FormGroup>
     </>

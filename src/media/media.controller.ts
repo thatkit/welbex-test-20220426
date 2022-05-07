@@ -26,7 +26,7 @@ export class MediaController {
     @Param() blogNoteId,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    // console.log('co blogNoteId:', blogNoteId)
+    console.log('co files:', files);
     return this.mediaService.createObjects(
       req.user.username,
       blogNoteId.blogNoteId,
