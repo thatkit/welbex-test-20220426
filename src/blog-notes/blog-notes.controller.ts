@@ -72,9 +72,9 @@ export class BlogNotesController {
     const { deleteFiles, ...updateBlogNoteFormData } =
       updateBlogNoteFormDataDto;
     const deleteFilesArr = deleteFiles ? deleteFiles.split('/') : null;
-    // console.log('updateBlogNoteFormData:', updateBlogNoteFormData);
-    // console.log('deleteFiles:', deleteFilesArr);
-    // console.log('addFiles:', addFiles);
+    console.log('updateBlogNoteFormData:', updateBlogNoteFormData);
+    console.log('deleteFiles:', deleteFilesArr);
+    console.log('addFiles:', addFiles);
 
     const blogNoteResponse = await this.blogNotesService.update(blogNoteId, {
       ...updateBlogNoteFormData,
