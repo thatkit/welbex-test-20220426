@@ -24,6 +24,7 @@ export const BlogNoteModal = observer(
             <Button
               onClick={() => {
                 state.saveBlogNote();
+                state.saveMedia();
                 setIsOpen(false);
               }}
               color="warning"

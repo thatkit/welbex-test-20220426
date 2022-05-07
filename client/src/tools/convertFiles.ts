@@ -1,7 +1,7 @@
 export const convertFiles = async (event: any) => {
   const files = event.target.files || new FileList();
 
-  const convertedFiles = await Array.from(files).map(async (file: any) => {
+  const convertedFiles = Array.from(files).map(async (file: any) => {
     const blob = new Blob([file]);
     const buffer = await blob.arrayBuffer();
     return {
@@ -11,5 +11,5 @@ export const convertFiles = async (event: any) => {
     };
   });
 
-  return convertedFiles;
+  return await Promise.all(convertedFiles);
 };

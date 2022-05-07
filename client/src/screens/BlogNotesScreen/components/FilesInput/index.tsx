@@ -1,10 +1,14 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
 import { FormGroup, Input } from 'reactstrap';
+import { useGlobalState } from '../../../../state/globalState';
 import { convertFiles } from '../../../../tools/convertFiles';
 import { ImageContainer } from '../ImageContainer';
 
-export const FilesInput = ({ data }: { data: any }) => {
+export const FilesInput = observer(({ data }: { data: any }) => {
   // # any
+  const [state] = useState(useGlobalState());
+
   return (
     <>
       {Boolean(data.media) !== false && (
@@ -17,9 +21,9 @@ export const FilesInput = ({ data }: { data: any }) => {
           placeholder="your file"
           type="file"
           multiple={true}
-          onChange={convertFiles}
+          onChange={(e) => state.setMediaInput(convertFiles(e))}
         />
       </FormGroup>
     </>
   );
-};
+});

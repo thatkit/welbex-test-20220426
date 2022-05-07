@@ -3,9 +3,11 @@ import { makeAutoObservable } from 'mobx';
 import { BlogNote } from '../types';
 import { mockupUrl } from '../mockupData/url';
 import { apiTextClient } from '../api/textClient';
+import { apiMediaClient } from '../api/mediaClient';
 
 export class GlobalState {
-  client;
+  textClient;
+  mediaClient;
   blogNotes: BlogNote[] = [];
   username: string | undefined = '';
 
@@ -16,9 +18,12 @@ export class GlobalState {
     mediaRefs: [],
   };
 
+  mediaInput: any;
+
   constructor() {
     makeAutoObservable(this);
-    this.client = new apiTextClient();
+    this.textClient = new apiTextClient();
+    this.mediaClient = new apiMediaClient();
   }
 
   /* ~~~ FORM INPUT CONTROL ~~~ */
@@ -40,31 +45,43 @@ export class GlobalState {
     this.blogNoteInputs.message = message;
   }
 
+  async setMediaInput(convertedFiles: any) {
+    this.mediaInput = await convertedFiles;
+  }
+
   /* ~~~ TEXTUAL CRUD ~~~ */
 
   async setBlogNotes() {
-    const response = await this.client.getBlogNotes();
+    const response = await this.textClient.getBlogNotes();
     // console.log('state: ', response);
     this.blogNotes = await response;
   }
 
   async saveBlogNote() {
-    await this.client.saveBlogNote(this.blogNoteInputs);
+    await this.textClient.saveBlogNote(this.blogNoteInputs);
     await this.setBlogNotes();
   }
 
   async updateBlogNote() {
-    await this.client.updateBlogNote(this.blogNoteInputs, this.blogNoteInputs.id);
+    await this.textClient.updateBlogNote(this.blogNoteInputs, this.blogNoteInputs.id);
     await this.setBlogNotes();
   }
 
   async deleteBlogNote() {
-    await this.client.deleteBlogNote(this.blogNoteInputs.id);
+    await this.textClient.deleteBlogNote(this.blogNoteInputs.id);
     await this.setBlogNotes();
   }
 
   fetchPresignedUrl(blogNoteTitle: string, fileName: string) {
     return mockupUrl;
+  }
+
+  /* ~~~ MEDIA CR*D ~~~ */
+
+  async saveMedia() {
+    console.log('media:', this.mediaInput);
+    console.log('blogNoteId:', this.blogNoteInputs.id);
+    await this.mediaClient.saveMedia(this.mediaInput, this.blogNoteInputs.id);
   }
 
   /* ~~~ SETTERS & GETTERS ~~~ */

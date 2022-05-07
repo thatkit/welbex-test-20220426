@@ -1,36 +1,38 @@
 import { FetchOptions } from '../types';
 import Cookies from 'js-cookie';
 
-export class apiTextClient {
+export class apiMediaClient {
   baseUrl: string = 'http://localhost:3001/files';
   isLoggedIn: boolean = false;
   headers = new Headers();
 
   setOptions(options?: FetchOptions) {
+    const formData = new FormData();
+    formData.append('files', options?.body);
     return {
       method: options?.method || 'GET',
       headers: {
         ...this.headers,
-        'Content-Type': 'multipart/form-data',
+        // 'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${options?.accessToken}`,
       },
-      body: options?.body, // # ?
+      body: formData, // # ?
     };
   }
 
   /* ~~~ FOR MEDIA CR*D ~~~ */
 
-  async saveMedia(blogNoteId: string) {
+  async saveMedia(media: any, blogNoteId: string) {
     try {
       const response = await fetch(
         `${this.baseUrl}/${blogNoteId}`,
         this.setOptions({
           method: 'POST',
           accessToken: Cookies.get('accessToken'),
-          body: ['blob | buffer?'], // # ?
+          body: media,
         }),
       );
-      // console.log('res original:', response);
+      console.log('res original:', response);
 
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
