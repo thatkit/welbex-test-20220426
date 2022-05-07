@@ -33,7 +33,7 @@ export class BlogNotesController {
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files'))
-  @Post('test')
+  @Post('')
   async createWithMedia(
     @Body() createBlogNoteFormDataDto: CreateBlogNoteFormDataDto,
     @UploadedFiles() files: Express.Multer.File[],
@@ -55,14 +55,14 @@ export class BlogNotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('test')
+  @Get('')
   findAll(@Request() req) {
     return this.blogNotesService.findAll(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('addFiles'))
-  @Put('test/:blogNoteId')
+  @Put(':blogNoteId')
   async updateWithMedia(
     @Param('blogNoteId') blogNoteId: string,
     @Body() updateBlogNoteFormDataDto: UpdateBlogNoteFormDataDto,
@@ -72,9 +72,6 @@ export class BlogNotesController {
     const { deleteFiles, ...updateBlogNoteFormData } =
       updateBlogNoteFormDataDto;
     const deleteFilesArr = deleteFiles ? deleteFiles.split('/') : null;
-    console.log('updateBlogNoteFormData:', updateBlogNoteFormData);
-    console.log('deleteFiles:', deleteFilesArr);
-    console.log('addFiles:', addFiles);
 
     const blogNoteResponse = await this.blogNotesService.update(blogNoteId, {
       ...updateBlogNoteFormData,
@@ -107,21 +104,17 @@ export class BlogNotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBlogNoteDto: UpdateBlogNoteDto,
-    @Request() req,
-  ) {
-    return this.blogNotesService.update(id, {
-      ...updateBlogNoteDto,
-      userId: req.user.id,
-    });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.blogNotesService.remove(id);
+  @Delete(':blogNoteId')
+  async remove(@Param('blogNoteId') blogNoteId: string, @Request() req) {
+    const blogNoteResponse = await this.blogNotesService.remove(blogNoteId);
+    const mediaResponse = await this.mediaService.deleteObjects(
+      req.user.username,
+      blogNoteId,
+      [''],
+    );
+    return {
+      ...blogNoteResponse,
+      deleted: mediaResponse,
+    };
   }
 }
