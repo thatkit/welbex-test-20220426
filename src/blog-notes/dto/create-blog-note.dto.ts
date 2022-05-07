@@ -5,3 +5,9 @@ export class CreateBlogNoteDto {
   mediaRefs: string[];
   userId: string;
 }
+
+export class CreateBlogNoteFormDataDto {
+  id: string;
+  title: string;
+  message: string;
+}

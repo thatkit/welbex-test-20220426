@@ -5,7 +5,7 @@ import { filterOutMediaRefs } from 'src/tools/filterOurMediaRefs';
 import { mapToMediaIds } from 'src/tools/mapFromMediaRefs';
 import { mapToMediaRefs } from 'src/tools/mapToMediaRefs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { CreateBlogNoteDto } from './dto/create-blog-note.dto';
+import { CreateBlogNoteDto, CreateBlogNoteFormDataDto } from './dto/create-blog-note.dto';
 import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
 import { BlogNote } from './entities/blog-note.entity';
 
@@ -20,19 +20,13 @@ export class BlogNotesService {
   ) {}
 
   async create(
-    createBlogNoteDto: CreateBlogNoteDto,
+    createBlogNoteDto: CreateBlogNoteFormDataDto,
     userId: string,
   ): Promise<BlogNote> {
-    const { mediaRefs, ...blogNoteData } = createBlogNoteDto;
-    // saving blogNote
     const blogNoteResponse = await this.blogNoteRepository.save({
-      ...blogNoteData,
+      ...createBlogNoteDto,
       userId,
     });
-    // saving media related to blogNote
-    await this.mediaRepository.save(
-      mapToMediaRefs(mediaRefs, blogNoteResponse.id),
-    );
     return blogNoteResponse;
   }
 
