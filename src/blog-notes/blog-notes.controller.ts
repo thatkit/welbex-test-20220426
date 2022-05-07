@@ -63,21 +63,47 @@ export class BlogNotesController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('addFiles'))
   @Put('test/:blogNoteId')
-  updateWithMedia(
+  async updateWithMedia(
     @Param('blogNoteId') blogNoteId: string,
     @Body() updateBlogNoteFormDataDto: UpdateBlogNoteFormDataDto,
     @UploadedFiles() addFiles: Express.Multer.File[],
     @Request() req,
   ) {
-    const { deleteFiles, ...updateBlogNoteFormData } = updateBlogNoteFormDataDto;
-    console.log('updateBlogNoteFormData:', updateBlogNoteFormData);
-    console.log('deleteFiles:', deleteFiles);
-    console.log('addFiles:', addFiles);
+    const { deleteFiles, ...updateBlogNoteFormData } =
+      updateBlogNoteFormDataDto;
+    const deleteFilesArr = deleteFiles ? deleteFiles.split('/') : null;
+    // console.log('updateBlogNoteFormData:', updateBlogNoteFormData);
+    // console.log('deleteFiles:', deleteFilesArr);
+    // console.log('addFiles:', addFiles);
 
-    return this.blogNotesService.update(blogNoteId, {
+    const blogNoteResponse = await this.blogNotesService.update(blogNoteId, {
       ...updateBlogNoteFormData,
       userId: req.user.id,
     });
+
+    let mediaCreateResponse;
+    if (addFiles.length !== 0) {
+      mediaCreateResponse = await this.mediaService.createObjects(
+        req.user.username,
+        blogNoteId,
+        addFiles,
+      );
+    }
+
+    let mediaDeleteResponse;
+    if (deleteFilesArr) {
+      mediaDeleteResponse = await this.mediaService.deleteObjects(
+        req.user.username,
+        blogNoteId,
+        deleteFilesArr,
+      );
+    }
+
+    return {
+      ...blogNoteResponse,
+      added: mediaCreateResponse,
+      deleted: mediaDeleteResponse,
+    };
   }
 
   @UseGuards(JwtAuthGuard)

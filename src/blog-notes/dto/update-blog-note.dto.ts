@@ -10,5 +10,5 @@ export class UpdateBlogNoteDto extends PartialType(CreateBlogNoteDto) {}
 export class UpdateBlogNoteFormDataDto {
   title?: string;
   message?: string;
-  deleteFiles?: string[];
+  deleteFiles?: string;
 }
