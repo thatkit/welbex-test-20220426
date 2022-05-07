@@ -39,14 +39,6 @@ export class BlogNotesService {
       .getMany();
   }
 
-  async findOne(id: string): Promise<any> {
-    return await this.blogNoteRepository
-      .createQueryBuilder('blog_note')
-      .leftJoinAndSelect('blog_note.media', 'media')
-      .where('blog_note.id = :id', { id })
-      .getOne();
-  }
-
   async update(
     id: string,
     updateBlogNoteDto: UpdateBlogNoteDto,

@@ -19,7 +19,10 @@ import {
   CreateBlogNoteDto,
   CreateBlogNoteFormDataDto,
 } from './dto/create-blog-note.dto';
-import { UpdateBlogNoteDto } from './dto/update-blog-note.dto';
+import {
+  UpdateBlogNoteDto,
+  UpdateBlogNoteFormDataDto,
+} from './dto/update-blog-note.dto';
 
 @Controller('blog-notes')
 export class BlogNotesController {
@@ -52,23 +55,29 @@ export class BlogNotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() createBlogNoteDto: CreateBlogNoteDto, @Request() req) {
-    // console.log('create co: ', createBlogNoteDto, req.user.id);
-    return this.blogNotesService.create(createBlogNoteDto, req.user.id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('test')
   findAll(@Request() req) {
-    // console.log('findAll co: ', req.user.id);
     return this.blogNotesService.findAll(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.blogNotesService.findOne(id);
+  @UseInterceptors(FilesInterceptor('addFiles'))
+  @Put('test/:blogNoteId')
+  updateWithMedia(
+    @Param('blogNoteId') blogNoteId: string,
+    @Body() updateBlogNoteFormDataDto: UpdateBlogNoteFormDataDto,
+    @UploadedFiles() addFiles: Express.Multer.File[],
+    @Request() req,
+  ) {
+    const { deleteFiles, ...updateBlogNoteFormData } = updateBlogNoteFormDataDto;
+    console.log('updateBlogNoteFormData:', updateBlogNoteFormData);
+    console.log('deleteFiles:', deleteFiles);
+    console.log('addFiles:', addFiles);
+
+    return this.blogNotesService.update(blogNoteId, {
+      ...updateBlogNoteFormData,
+      userId: req.user.id,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
