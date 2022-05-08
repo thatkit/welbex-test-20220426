@@ -104,13 +104,18 @@ export class BlogNotesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FilesInterceptor(''))
   @Delete(':blogNoteId')
-  async remove(@Param('blogNoteId') blogNoteId: string, @Request() req) {
+  async remove(
+    @Param('blogNoteId') blogNoteId: string,
+    @Body() body: any,
+    @Request() req,
+  ) {
     const blogNoteResponse = await this.blogNotesService.remove(blogNoteId);
     const mediaResponse = await this.mediaService.deleteObjects(
       req.user.username,
       blogNoteId,
-      [''],
+      body.deleteFiles ? body.deleteFiles.split('/') : null,
     );
     return {
       ...blogNoteResponse,
