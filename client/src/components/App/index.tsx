@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { observer } from 'mobx-react-lite';
-import { useAuthState } from '../../state/authState';
+import { useAuthState } from '../../screens/AuthScreen/authState';
 import { BlogNotesScreen } from '../../screens/BlogNotesScreen';
 import { AuthScreen } from '../../screens/AuthScreen';
 

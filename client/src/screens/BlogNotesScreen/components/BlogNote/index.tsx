@@ -5,7 +5,7 @@ import { BlogNoteModal } from '../BlogNoteModal';
 import { ImageContainer } from '../ImageContainer';
 import closeIcon from '../../../../assets/cross-icon.svg';
 import { observer } from 'mobx-react-lite';
-import { useGlobalState } from '../../../../state/globalState';
+import { useGlobalState } from '../../globalState';
 
 export const BlogNote = observer(({ data }: { data: any }) => {
   // # any

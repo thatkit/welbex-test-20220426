@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App/index';
 import reportWebVitals from './reportWebVitals';
-import { AuthState, AuthStateProvider } from './state/authState';
-import { GlobalState, GlobalStateProvider } from './state/globalState';
+import { AuthState, AuthStateProvider } from './screens/AuthScreen/authState';
+import { GlobalState, GlobalStateProvider } from './screens/BlogNotesScreen/globalState';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

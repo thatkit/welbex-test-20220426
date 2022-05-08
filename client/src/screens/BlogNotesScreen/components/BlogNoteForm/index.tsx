@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
-import { useGlobalState } from '../../../../state/globalState';
+import { useGlobalState } from '../../globalState';
 import { FilesInput } from '../FilesInput';
 
 export const BlogNoteForm = observer(

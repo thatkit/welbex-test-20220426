@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
-import { User } from '../types';
-import { apiTextClient } from '../api/textClient';
+import { User } from '../../types';
+import { apiTextClient } from '../../api/textClient';
 
 export class AuthState {
   client;

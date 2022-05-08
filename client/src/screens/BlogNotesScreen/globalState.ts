@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
-import { BlogNote } from '../types';
-import { mockupUrl } from '../mockupData/url';
-import { apiTextClient } from '../api/textClient';
-import { apiMediaClient } from '../api/mediaClient';
+import { BlogNote } from '../../types';
+import { mockupUrl } from '../../mockupData/url';
+import { apiTextClient } from '../../api/textClient';
+import { apiMediaClient } from '../../api/mediaClient';
 
 export class GlobalState {
   textClient;

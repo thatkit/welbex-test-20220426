@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { FormGroup, Input } from 'reactstrap';
-import { useGlobalState } from '../../../../state/globalState';
+import { useGlobalState } from '../../globalState';
 import { convertFiles } from '../../../../tools/convertFiles';
 import { ImageContainer } from '../ImageContainer';
 
