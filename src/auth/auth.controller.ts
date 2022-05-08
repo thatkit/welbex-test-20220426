@@ -22,21 +22,18 @@ export class AuthController {
 
   @Post('register')
   register(@Body() newUser: CreateUserDto): Promise<ReturnedUserDto> {
-    // console.log('Auth register POST:', newUser);
     return this.usersService.createUser(newUser);
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    // console.log('Auth login POST:', req.user);
     return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('login')
   getUsername(@Request() req) {
-    console.log('Auth getUsername GET:', req.user.username);
     return { username: req.user.username };
   }
 }

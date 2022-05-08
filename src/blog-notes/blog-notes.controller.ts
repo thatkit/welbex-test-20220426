@@ -15,14 +15,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MediaService } from 'src/media/media.service';
 import { BlogNotesService } from './blog-notes.service';
-import {
-  CreateBlogNoteDto,
-  CreateBlogNoteFormDataDto,
-} from './dto/create-blog-note.dto';
-import {
-  UpdateBlogNoteDto,
-  UpdateBlogNoteFormDataDto,
-} from './dto/update-blog-note.dto';
+import { CreateBlogNoteFormDataDto } from './dto/create-blog-note.dto';
+import { UpdateBlogNoteFormDataDto } from './dto/update-blog-note.dto';
 
 @Controller('blog-notes')
 export class BlogNotesController {
@@ -55,7 +49,7 @@ export class BlogNotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('')
+  @Get()
   findAll(@Request() req) {
     return this.blogNotesService.findAll(req.user.id);
   }

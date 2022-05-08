@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,7 +14,6 @@ export class UsersService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<ReturnedUserDto> {
-    console.log('se:', createUserDto);
     const { password, ...user } = await this.userRepository.save({
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),

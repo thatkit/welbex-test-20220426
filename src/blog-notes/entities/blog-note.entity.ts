@@ -3,11 +3,9 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Media } from '../../media/entities/media.entity';
 
 @Entity()
 export class BlogNote {
@@ -22,9 +20,6 @@ export class BlogNote {
 
   @Column({ nullable: false })
   message: string;
-
-  @OneToMany(() => Media, (media) => media.blogNote)
-  media: Media[];
 
   @ManyToOne(() => User, (user) => user.user)
   user: User;

@@ -16,7 +16,6 @@ export class FilebaseCustomClient {
   // @ save objects IN create() or update(:blogNoteId) Postgres
   // @ access: PRIVATE
   async createObjects(username, blogNoteId, files) {
-    // console.log('fbClient:', files);
     return await Promise.all(
       files.map((file) => {
         return s3Client
@@ -41,8 +40,6 @@ export class FilebaseCustomClient {
   // # @ findAll objects IN findOne(:blogNoteId) Postgres
   // @ access: PRIVATE
   async findAllObjects(username, blogNoteId) {
-    // console.log('fbClient blogNoteId:', blogNoteId)
-    // console.log(`${username}/${blogNoteId}/`)
     await s3Client
       .listObjects(
         {
@@ -55,7 +52,6 @@ export class FilebaseCustomClient {
         },
       )
       .promise();
-    // console.log(this.Objects)
     return this.Objects;
   }
 
@@ -65,7 +61,6 @@ export class FilebaseCustomClient {
     const Keys = fileNames.map((fileName) => ({
       Key: `${username}/${blogNoteId}/${fileName}`,
     }));
-    // console.log('Keys:', Keys);
     return await s3Client
       .deleteObjects(
         {
@@ -74,8 +69,6 @@ export class FilebaseCustomClient {
         },
         (err, objects) => {
           if (err) return console.log(err);
-          // console.log('fbResponse:', objects);
-          // return objects;
         },
       )
       .promise();
@@ -90,12 +83,6 @@ export class FilebaseCustomClient {
     });
 
     return { url: response };
-
-    // .then(url => console.log(url))
-    // .catch(err => {
-    //     console.log('err:')
-    //     console.log(err)
-    // })
   }
 }
 
