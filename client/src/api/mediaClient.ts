@@ -2,7 +2,7 @@ import { FetchOptions } from '../types';
 import Cookies from 'js-cookie';
 
 export class apiMediaClient {
-  baseUrl: string = 'http://localhost:3001/files';
+  baseUrl: string = 'http://localhost:3001/media';
   isLoggedIn: boolean = false;
   headers = new Headers();
 

@@ -1,5 +1,6 @@
 import { BlogNoteInput, FetchOptions, User } from '../types';
 import Cookies from 'js-cookie';
+import { convertJsObjToFormData } from '../tools/convertJsObjToFormData';
 
 export class apiTextClient {
   baseUrl: string = 'http://localhost:3001';
@@ -11,10 +12,10 @@ export class apiTextClient {
       method: options?.method || 'GET',
       headers: {
         ...this.headers,
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         Authorization: `Bearer ${options?.accessToken}`,
       },
-      body: JSON.stringify(options?.body) || null, // # should be different
+      body: options?.body, // # should be different
     };
   }
 
@@ -26,7 +27,7 @@ export class apiTextClient {
         `${this.baseUrl}/auth/register/`,
         this.setOptions({
           method: 'POST',
-          body: newUser,
+          body: JSON.stringify(newUser),
         }),
       );
       // console.log('res original:', await response.json());
@@ -44,7 +45,7 @@ export class apiTextClient {
         `${this.baseUrl}/auth/login/`,
         this.setOptions({
           method: 'POST',
-          body: user,
+          body: JSON.stringify(user),
         }),
       );
       // console.log('res original:', await response.json());
@@ -56,8 +57,6 @@ export class apiTextClient {
     }
   }
 
-  /* ~~~ FOR TEXTUAL CRUD ~~~ */
-
   async getUsername() {
     try {
       const response = await fetch(
@@ -68,6 +67,32 @@ export class apiTextClient {
       );
       // console.log('res original:', response);
       // # 1 problem here
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
+      const parsed = await response.json();
+      // console.log('res parsed:', parsed);
+      return parsed;
+    } catch (err) {
+      console.log(err); // # need a better error handler
+    }
+  }
+
+  /* ~~~ FOR BLOGNOTES CRUD ~~~ */
+
+  async saveBlogNote(blogNote: BlogNoteInput) {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/blog-notes`,
+        this.setOptions({
+          method: 'POST',
+          accessToken: Cookies.get('accessToken'),
+          body: convertJsObjToFormData(blogNote),
+        }),
+      );
+      // console.log('res original:', response);
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
@@ -102,30 +127,6 @@ export class apiTextClient {
     }
   }
 
-  async saveBlogNote(blogNote: BlogNoteInput) {
-    try {
-      const response = await fetch(
-        `${this.baseUrl}/blog-notes`,
-        this.setOptions({
-          method: 'POST',
-          accessToken: Cookies.get('accessToken'),
-          body: blogNote,
-        }),
-      );
-      // console.log('res original:', response);
-
-      if (!response.ok) {
-        throw new Error(`${response.status}: ${response.statusText}`);
-      }
-
-      const parsed = await response.json();
-      // console.log('res parsed:', parsed);
-      return parsed;
-    } catch (err) {
-      console.log(err); // # need a better error handler
-    }
-  }
-
   async updateBlogNote(blogNote: BlogNoteInput, blogNoteId: string) {
     try {
       const response = await fetch(
@@ -133,7 +134,7 @@ export class apiTextClient {
         this.setOptions({
           method: 'PUT',
           accessToken: Cookies.get('accessToken'),
-          body: blogNote,
+          body: convertJsObjToFormData(blogNote),
         }),
       );
       // console.log('res original:', response);
@@ -150,13 +151,14 @@ export class apiTextClient {
     }
   }
 
-  async deleteBlogNote(blogNoteId: string) {
+  async deleteBlogNote(blogNote: BlogNoteInput, blogNoteId: string) {
     try {
       const response = await fetch(
         `${this.baseUrl}/blog-notes/${blogNoteId}`,
         this.setOptions({
           method: 'DELETE',
           accessToken: Cookies.get('accessToken'),
+          body: convertJsObjToFormData(blogNote),
         }),
       );
       // console.log('res original:', response);
@@ -171,5 +173,5 @@ export class apiTextClient {
     } catch (err) {
       console.log(err); // # need a better error handler
     }
-  }  
+  }
 }
