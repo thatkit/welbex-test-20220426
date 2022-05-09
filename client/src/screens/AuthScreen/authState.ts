@@ -8,7 +8,7 @@ export class AuthState {
   client;
   isAuthorised: boolean = false;
 
-  username: string | undefined = '';
+  username: string = '';
 
   userInputs: User = {
     username: '',
@@ -35,7 +35,7 @@ export class AuthState {
   async registerUser() {
     const response = await this.client.registerUser(this.userInputs);
 
-    if (!response?.username) { // # should be more elegan
+    if (!response?.username) { // # should be more elegant
       this.setUnauthorised();
       return null;
     }
@@ -58,7 +58,6 @@ export class AuthState {
       const response = await this.client.getUsername();
 
       if (response.username) {
-        // console.log('this.setAuthorised();', response)
         this.setAuthorised();
         this.setUsername = response.username;
       }
@@ -75,7 +74,7 @@ export class AuthState {
     this.isAuthorised = false;
   }
 
-  set setUsername(username: string | undefined) {
+  set setUsername(username: string) {
     this.username = username;
   }
 

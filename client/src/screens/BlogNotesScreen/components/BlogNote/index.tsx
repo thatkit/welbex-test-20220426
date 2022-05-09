@@ -13,16 +13,16 @@ import { ImageContainer } from '../ImageContainer';
 import closeIcon from '../../../../assets/cross-icon.svg';
 import { observer } from 'mobx-react-lite';
 import { useGlobalState } from '../../globalState';
+import { BlogNote as BlogNoteType } from '../../../../types';
 
-export const BlogNote = observer(({ data }: { data: any }) => {
-  // # any
+export const BlogNote = observer(({ blogNote }: { blogNote: BlogNoteType }) => {
   const action = {
     action: 'create',
   }; // # what for?
 
   const [state] = useState(useGlobalState());
   useEffect(() => {
-    state.setBlogNoteMedia(data.id);
+    state.setBlogNoteMedia(blogNote.id);
   }, []);
 
   return (
@@ -34,24 +34,26 @@ export const BlogNote = observer(({ data }: { data: any }) => {
             alt="X"
             src={closeIcon}
             onClick={() => {
-              state.setIdInput(data.id);
+              state.setIdInput(blogNote.id);
               state.deleteBlogNote();
               state.emptyIdInput();
             }}
           />
         </Badge>
-        {state.blogNoteMedia && <ImageContainer action={action.action} data={state.blogNoteMedia} />}
+        {state.blogNoteMedia && (
+          <ImageContainer action={action.action} data={state.blogNoteMedia} />
+        )}
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>
             <CardTitle className={styles.title} tag="h5">
-              {data.title}
+              {blogNote.title}
             </CardTitle>
             <CardSubtitle className="text-muted" tag="h6">
-              {data.date}
+              {new Date(blogNote.date).toLocaleString('en-GB')}
             </CardSubtitle>
-            <CardText>{data.message}</CardText>
+            <CardText>{blogNote.message}</CardText>
           </div>
-          <BlogNoteModal action={{ action: 'edit' }} data={data} />
+          <BlogNoteModal action={{ action: 'edit' }} data={blogNote} />
         </CardBody>
       </div>
     </Card>

@@ -4,7 +4,6 @@ export class BlogNote {
     title!: string;
     message!: string;
     userId?: string;
-    media?: any;
 }
 
 export class Media {
