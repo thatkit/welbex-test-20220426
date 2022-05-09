@@ -19,14 +19,10 @@ export class User {
     password!: string;
 }
 
-export class FetchOptions {
-    method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    accessToken?: string;
-    body?: any;
-}
-
 export class BlogNoteInput {
+    id!: string;
     title!: string;
     message!: string;
-    mediaRefs!: string[];
+    files?: any; // # need a profound typing
+    deleteFiles?: any; // # need a profound typing
 }

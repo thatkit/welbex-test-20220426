@@ -10,6 +10,7 @@ export const ImageContainer = ({
   action: any;
   data: any;
 }) => {
+  console.log(data);
   return (
     <div className={styles.imgContainer}>
       {data.media.map((file: any, ind: number) => {

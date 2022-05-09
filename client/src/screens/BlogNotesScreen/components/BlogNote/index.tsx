@@ -28,7 +28,7 @@ export const BlogNote = observer(({ data }: { data: any }) => {
             state.emptyIdInput();
           }}
         /></Badge>
-        <ImageContainer action={action.action} data={data} />
+        {/* <ImageContainer action={action.action} data={data} /> // # */}
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>
             <CardTitle className={styles.title} tag="h5">

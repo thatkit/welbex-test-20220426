@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 import { useGlobalState } from '../../globalState';
 import { FilesInput } from '../FilesInput';
+import { v4 as uuid } from 'uuid';
 
 export const BlogNoteForm = observer(
   ({ data }: { data: any }) => {
@@ -18,7 +19,7 @@ export const BlogNoteForm = observer(
             placeholder={data.title || 'title'}
             onChange={({ target }) => {
               state.setTitleInput(target.value);
-              state.setIdInput(data.id);
+              state.setIdInput(data.id || uuid());
             }}
           />
           <Label for="title">Title</Label>

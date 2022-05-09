@@ -27,7 +27,7 @@ export class BlogNotesController {
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files'))
-  @Post('')
+  @Post()
   async createWithMedia(
     @Body() createBlogNoteFormDataDto: CreateBlogNoteFormDataDto,
     @UploadedFiles() files: Express.Multer.File[],

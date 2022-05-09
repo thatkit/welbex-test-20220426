@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
 import { User } from '../../types';
-import { apiTextClient } from '../../api/textClient';
+import { apiClient } from '../../api';
 
 export class AuthState {
   client;
@@ -17,7 +17,7 @@ export class AuthState {
 
   constructor() {
     makeAutoObservable(this);
-    this.client = new apiTextClient();
+    this.client = new apiClient();
   }
 
   /* ~~~ FORM INPUT CONTROL ~~~ */

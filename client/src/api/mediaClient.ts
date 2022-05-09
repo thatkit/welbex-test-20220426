@@ -1,4 +1,3 @@
-import { FetchOptions } from '../types';
 import Cookies from 'js-cookie';
 
 export class apiMediaClient {
@@ -6,7 +5,7 @@ export class apiMediaClient {
   isLoggedIn: boolean = false;
   headers = new Headers();
 
-  setOptions(options?: FetchOptions) {
+  setOptions(options?: any) {
     const formData = new FormData();
     formData.append('files', options?.body);
     return {

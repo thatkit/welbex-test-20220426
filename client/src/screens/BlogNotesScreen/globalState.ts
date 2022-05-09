@@ -2,11 +2,11 @@ import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import { BlogNote } from '../../types';
 import { mockupUrl } from '../../mockupData/url';
-import { apiTextClient } from '../../api/textClient';
+import { apiClient } from '../../api';
 import { apiMediaClient } from '../../api/mediaClient';
 
 export class GlobalState {
-  textClient;
+  client;
   mediaClient;
   blogNotes: BlogNote[] = [];
   username: string | undefined = '';
@@ -15,22 +15,20 @@ export class GlobalState {
     id: '',
     title: '',
     message: '',
-    mediaRefs: [],
+    files: [],
+    deleteFiles: [],
   };
-
-  mediaInput: any;
 
   constructor() {
     makeAutoObservable(this);
-    this.textClient = new apiTextClient();
+    this.client = new apiClient();
     this.mediaClient = new apiMediaClient();
   }
 
   /* ~~~ FORM INPUT CONTROL ~~~ */
 
   setIdInput(id: string) {
-    if (!Boolean(this.blogNoteInputs.id)) return this.blogNoteInputs.id = id;
-    console.log('setIdInput');
+    if (!Boolean(this.blogNoteInputs.id)) return (this.blogNoteInputs.id = id);
   }
 
   emptyIdInput() {
@@ -45,43 +43,36 @@ export class GlobalState {
     this.blogNoteInputs.message = message;
   }
 
-  async setMediaInput(convertedFiles: any) {
-    this.mediaInput = await convertedFiles;
+  async setFilesInput(convertedFiles: any) {
+    this.blogNoteInputs.files = await convertedFiles;
   }
 
   /* ~~~ TEXTUAL CRUD ~~~ */
 
   async setBlogNotes() {
-    const response = await this.textClient.getBlogNotes();
-    // console.log('state: ', response);
+    const response = await this.client.getBlogNotes();
     this.blogNotes = await response;
   }
 
   async saveBlogNote() {
-    await this.textClient.saveBlogNote(this.blogNoteInputs);
-    await this.setBlogNotes();
+    await this.client.saveBlogNote(this.blogNoteInputs);
   }
 
   async updateBlogNote() {
-    await this.textClient.updateBlogNote(this.blogNoteInputs, this.blogNoteInputs.id);
+    await this.client.updateBlogNote(
+      this.blogNoteInputs,
+      this.blogNoteInputs.id,
+    );
     await this.setBlogNotes();
   }
 
   async deleteBlogNote() {
-    await this.textClient.deleteBlogNote(this.blogNoteInputs.id);
+    await this.client.deleteBlogNote(this.blogNoteInputs, this.blogNoteInputs.id);
     await this.setBlogNotes();
   }
 
   fetchPresignedUrl(blogNoteTitle: string, fileName: string) {
     return mockupUrl;
-  }
-
-  /* ~~~ MEDIA CR*D ~~~ */
-
-  async saveMedia() {
-    console.log('media:', this.mediaInput);
-    console.log('blogNoteId:', this.blogNoteInputs.id);
-    await this.mediaClient.saveMedia(this.mediaInput, this.blogNoteInputs.id);
   }
 
   /* ~~~ SETTERS & GETTERS ~~~ */
@@ -91,10 +82,12 @@ export class GlobalState {
   }
 
   get getBlogNotes() {
-    return this.blogNotes.slice().sort(
-      (prev, next) =>
-      new Date(next.date).getTime() - new Date(prev.date).getTime(),
-    );
+    return this.blogNotes
+      .slice()
+      .sort(
+        (prev, next) =>
+          new Date(next.date).getTime() - new Date(prev.date).getTime(),
+      );
   }
 }
 

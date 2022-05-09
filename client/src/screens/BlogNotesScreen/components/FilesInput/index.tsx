@@ -21,7 +21,7 @@ export const FilesInput = observer(({ data }: { data: any }) => {
           placeholder="your file"
           type="file"
           multiple={true}
-          onChange={(e) => state.setMediaInput(convertFiles(e))}
+          onChange={(e) => state.setFilesInput(convertFiles(e))}
         />
       </FormGroup>
     </>
