@@ -13,13 +13,13 @@ export const ImageContainer = ({
   return (
     <div className={styles.imgContainer}>
       {data.map((url: any, ind: number) => {
-        console.log('url:', url.url)
+        // console.log('url:', url.url)
         return action === 'edit' ? (
           <ImageDeleteWrapper key={ind}>
-            <Image url={url.url} blogNoteTitle={'hardcode data.title'} file={'hardcode data.title'} />
+            <Image url={url.url} />
           </ImageDeleteWrapper>
         ) : (
-          <Image url={url.url} blogNoteTitle={'hardcode data.title'} file={'hardcode data.title'} key={ind} />
+          <Image url={url.url} key={ind} />
         );
       })}
     </div>

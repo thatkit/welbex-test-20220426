@@ -26,3 +26,5 @@ export class BlogNoteInput {
     files?: any; // # need a profound typing
     deleteFiles?: any; // # need a profound typing
 }
+
+export type DeleteFiles = string[];

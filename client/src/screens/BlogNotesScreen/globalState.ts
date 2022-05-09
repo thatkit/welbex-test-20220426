@@ -94,7 +94,7 @@ export class GlobalState {
 
   async deleteBlogNote() {
     await this.client.deleteBlogNote(
-      this.blogNoteInputs,
+      this.blogNoteInputs.deleteFiles,
       this.blogNoteInputs.id,
     );
     await this.setBlogNotes();

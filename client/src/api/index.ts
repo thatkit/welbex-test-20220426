@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { BlogNoteInput, User } from '../types';
+import { BlogNoteInput, DeleteFiles, User } from '../types';
 import { convertJsObjToFormData } from '../tools/convertJsObjToFormData';
 
 export class apiClient {
@@ -164,12 +164,14 @@ export class apiClient {
     }
   }
 
-  async deleteBlogNote(blogNote: BlogNoteInput, blogNoteId: string) {
+  async deleteBlogNote(deleteFiles: DeleteFiles, blogNoteId: string) {
+    const body = convertJsObjToFormData(deleteFiles);
+    console.log('body:', body);
     try {
       const response = await fetch(`${this.baseUrl}/blog-notes/${blogNoteId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-        body: convertJsObjToFormData(blogNote),
+        body: body,
       });
       // console.log('res original:', response);
 
