@@ -64,7 +64,7 @@ export class apiClient {
 
   async saveBlogNote(blogNote: BlogNoteInput) {
     const body = convertJsObjToFormData(blogNote);
-    console.log('body: ', body)
+    console.log('body: ', body);
     try {
       // console.log('req original:', request);
       const response = await fetch(`${this.baseUrl}/blog-notes`, {
@@ -166,14 +166,14 @@ export class apiClient {
     }
   }
 
-  async deleteBlogNote(deleteFiles: string[], blogNoteId: string) {
-    const body = convertJsObjToFormData(deleteFiles);
-    console.log('body:', body);
+  async deleteBlogNote(deleteFiles: string, blogNoteId: string) {
+    const formData = new FormData();
+    formData.append('deleteFiles', deleteFiles);
     try {
       const response = await fetch(`${this.baseUrl}/blog-notes/${blogNoteId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-        body: body,
+        body: formData,
       });
       // console.log('res original:', response);
 

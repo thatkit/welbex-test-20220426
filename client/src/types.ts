@@ -16,7 +16,7 @@ export class BlogNoteInput {
   title!: string;
   message!: string;
   files?: any; // # need a profound typing
-  deleteFiles?: string[];
+  deleteFiles?: string;
 }
 
 export class Media {

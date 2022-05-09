@@ -18,7 +18,7 @@ export class GlobalState {
     title: '',
     message: '',
     files: [],
-    deleteFiles: [''],
+    deleteFiles: '',
   };
 
   constructor() {
@@ -70,9 +70,9 @@ export class GlobalState {
   }
 
   hasMedia(blogNoteId: string) {
-    const blogNote = this.getOneBlogNoteMedia(blogNoteId);
-    if (blogNote) {
-      return Boolean(blogNote.media);
+    const blogNoteMedia = this.getOneBlogNoteMedia(blogNoteId);
+    if (blogNoteMedia) {
+      return Boolean(blogNoteMedia.media);
     }
   }
 
@@ -99,11 +99,12 @@ export class GlobalState {
   }
 
   setDeleteFilesInput(blogNoteId: string) {
-    const blogNoteMedia = this.blogNotesMedia.filter(
-      (blogNote) => blogNote.blogNoteId === blogNoteId,
-    )[0];
-    const filenames = blogNoteMedia.media.map((file) => file.originalFilename);
-    this.blogNoteInputs.deleteFiles = filenames;
+    const blogNoteMedia = this.getOneBlogNoteMedia(blogNoteId);
+    if (blogNoteMedia?.media) {
+      const filenames = blogNoteMedia.media.map((file) => file.originalFilename);
+      this.blogNoteInputs.deleteFiles = filenames.join('/');
+    }
+    console.log('this.blogNoteInputs:', this.blogNoteInputs);
   }
 
   /* ~~~ BLOGNOTES CRUD ~~~ */
