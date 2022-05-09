@@ -58,6 +58,7 @@ export class FilebaseCustomClient {
   // @ deleteObjects IN update(:blogNoteId) or delete(:blogNoteId) Postgres
   // @ access: PRIVATE
   async deleteObjects(username, blogNoteId, fileNames) {
+    console.log('fileNames:', fileNames);
     const Keys = fileNames.map((fileName) => ({
       Key: `${username}/${blogNoteId}/${fileName}`,
     }));

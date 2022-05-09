@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -21,9 +21,6 @@ export const BlogNote = observer(({ blogNote }: { blogNote: BlogNoteType }) => {
   }; // # what for?
 
   const [state] = useState(useGlobalState());
-  useEffect(() => {
-    state.setMedia(blogNote.id);
-  }, []);
 
   return (
     <Card className={styles.card}>
@@ -35,14 +32,14 @@ export const BlogNote = observer(({ blogNote }: { blogNote: BlogNoteType }) => {
             src={closeIcon}
             onClick={() => {
               state.setIdInput(blogNote.id);
-              state.setDeleteFilesInput();
+              state.setDeleteFilesInput(blogNote.id);
               state.deleteBlogNote();
               state.emptyIdInput();
             }}
           />
         </Badge>
-        {state.blogNoteMedia && (
-          <ImageContainer action={action.action} data={state.getMedia} />
+        {state.hasMedia(blogNote.id) && (
+          <ImageContainer action={action.action} data={state.getOneBlogNoteMedia(blogNote.id)?.media} />
         )}
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>

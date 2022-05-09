@@ -9,7 +9,7 @@ export const BlogNoteCloud = observer(() => {
   const [state] = useState(useGlobalState());
 
   useEffect(() => {
-    state.setBlogNotes();
+    state.initialise();
   }, []);
 
   return (

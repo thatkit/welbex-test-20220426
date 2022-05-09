@@ -23,3 +23,8 @@ export class Media {
   originalFilename!: string;
   url!: string;
 }
+
+export class BlogNotesMedia {
+  blogNoteId!: string;
+  media!: Media[];
+}

@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
-import { BlogNote, Media } from '../../types';
-import { mockupUrl } from '../../mockupData/url';
+import { BlogNote, BlogNotesMedia, Media } from '../../types';
 import { apiClient } from '../../api';
 import { apiMediaClient } from '../../api/mediaClient';
 import { log } from '../../tools/log';
@@ -12,7 +11,7 @@ export class GlobalState {
 
   blogNotes: BlogNote[] = [];
 
-  blogNoteMedia: Media[] = [];
+  blogNotesMedia: BlogNotesMedia[] = [];
 
   blogNoteInputs = {
     id: '',
@@ -30,12 +29,26 @@ export class GlobalState {
 
   /* ~~~ SETTERS ~~~ */
 
-  async setBlogNotes() {
-    this.blogNotes = await this.fetchAllBlogNotes();
+  set setterBlogNotes(blogNotes: BlogNote[]) {
+    this.blogNotes = blogNotes;
   }
 
-  async setMedia(blogNoteId: string) {
-    this.blogNoteMedia = await this.fetchBlogNoteMedia(blogNoteId);
+  async setBlogNotes() {
+    this.setterBlogNotes = await this.fetchAllBlogNotes();
+  }
+
+  async setMedia() {
+    this.getBlogNotes.forEach(async (blogNote) => {
+      this.blogNotesMedia.push({
+        blogNoteId: blogNote.id,
+        media: await this.fetchBlogNoteMedia(blogNote.id),
+      });
+    });
+  }
+
+  async initialise() {
+    await this.setBlogNotes();
+    await this.setMedia();
   }
 
   /* ~~~ GETTERS ~~~ */
@@ -49,8 +62,18 @@ export class GlobalState {
       );
   }
 
-  get getMedia(): Media[] {
-    return this.blogNoteMedia;
+  getOneBlogNoteMedia(blogNoteId: string): BlogNotesMedia | undefined {
+    const blogNoteMedia = this.blogNotesMedia.find(
+      (blogNote) => blogNote.blogNoteId === blogNoteId,
+    );
+    return blogNoteMedia;
+  }
+
+  hasMedia(blogNoteId: string) {
+    const blogNote = this.getOneBlogNoteMedia(blogNoteId);
+    if (blogNote) {
+      return Boolean(blogNote.media);
+    }
   }
 
   /* ~~~ FORM INPUT CONTROL ~~~ */
@@ -75,8 +98,11 @@ export class GlobalState {
     this.blogNoteInputs.files = await convertedFiles;
   }
 
-  setDeleteFilesInput() {
-    const filenames = this.blogNoteMedia.map((media) => media.originalFilename);
+  setDeleteFilesInput(blogNoteId: string) {
+    const blogNoteMedia = this.blogNotesMedia.filter(
+      (blogNote) => blogNote.blogNoteId === blogNoteId,
+    )[0];
+    const filenames = blogNoteMedia.media.map((file) => file.originalFilename);
     this.blogNoteInputs.deleteFiles = filenames;
   }
 
@@ -85,7 +111,8 @@ export class GlobalState {
   // CREATE
 
   async saveBlogNote() {
-    const { deleteFiles, ...blogNoteInputWithoutDeleteFiles } = this.blogNoteInputs;
+    const { deleteFiles, ...blogNoteInputWithoutDeleteFiles } =
+      this.blogNoteInputs;
     await this.client.saveBlogNote(blogNoteInputWithoutDeleteFiles);
   }
 
@@ -95,7 +122,7 @@ export class GlobalState {
     return await this.client.getBlogNotes();
   }
 
-  async fetchBlogNoteMedia(blogNoteId: string) {
+  async fetchBlogNoteMedia(blogNoteId: string): Promise<Media[]> {
     const keys = await this.fetchOneBlogNoteMedia(blogNoteId);
     const originalFilenames = keys.map((key: string) =>
       key.slice(key.lastIndexOf('/') + 1),
@@ -112,7 +139,7 @@ export class GlobalState {
     return blogNoteMedia;
   }
 
-  async fetchOneBlogNoteMedia(blogNoteId: string) {
+  async fetchOneBlogNoteMedia(blogNoteId: string): Promise<string[]> {
     return await this.client.getBlogNoteMedia(blogNoteId);
   }
 
