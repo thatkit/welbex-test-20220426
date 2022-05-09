@@ -9,7 +9,7 @@ export const ImageContainer = ({
 }: {
   action: any;
   data: any;
-}) => {
+}): JSX.Element => {
   return (
     <div className={styles.imgContainer}>
       {data.map((url: any, ind: number) => {

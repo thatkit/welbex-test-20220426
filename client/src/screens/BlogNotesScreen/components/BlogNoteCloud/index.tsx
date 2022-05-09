@@ -5,7 +5,7 @@ import { BlogNote } from '../BlogNote';
 import { useGlobalState } from '../../globalState';
 import { observer } from 'mobx-react-lite';
 
-export const BlogNoteCloud = observer(() => {
+export const BlogNoteCloud = observer((): JSX.Element => {
   const [state] = useState(useGlobalState());
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { useGlobalState } from '../../globalState';
 import { convertFiles } from '../../../../tools/convertFiles';
 import { ImageContainer } from '../ImageContainer';
 
-export const FilesInput = observer(({ data }: { data: any }) => {
+export const FilesInput = observer(({ data }: { data: any }): JSX.Element => {
   // # any
   const [state] = useState(useGlobalState());
 
