@@ -1,10 +1,10 @@
 export class BlogNote {
-    id?: string;
+    id!: string;
     date!: Date;
     title!: string;
     message!: string;
     userId?: string;
-    media?: Media[];
+    media?: any;
 }
 
 export class Media {

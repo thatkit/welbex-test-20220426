@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardGroup } from 'reactstrap';
 import styles from './styles.module.scss';
 import { BlogNote } from '../BlogNote';
-import { BlogNote as BlogNoteType } from '../../../../types';
+import { useGlobalState } from '../../globalState';
+import { observer } from 'mobx-react-lite';
 
-export const BlogNoteCloud = ({ data }: { data: BlogNoteType[] }) => {
-    return (
-        <CardGroup className={styles.cardGroup}>
-            {data.map((blogNoteData, ind) => {
-                return <BlogNote data={blogNoteData} key={ind} />
-            })}
-        </CardGroup>
-    )
-}
+export const BlogNoteCloud = observer(() => {
+  const [state] = useState(useGlobalState());
+
+  useEffect(() => {
+    state.setBlogNotes();
+  }, []);
+
+  return (
+    <CardGroup className={styles.cardGroup}>
+      {state.getBlogNotes.map((blogNoteData, ind) => {
+        return <BlogNote data={blogNoteData} key={ind} />;
+      })}
+    </CardGroup>
+  );
+});

@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { Card, CardBody, CardTitle, CardSubtitle, CardText, Badge } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  CardText,
+  Badge,
+} from 'reactstrap';
 import styles from './styles.module.scss';
 import { BlogNoteModal } from '../BlogNoteModal';
 import { ImageContainer } from '../ImageContainer';
@@ -14,21 +21,26 @@ export const BlogNote = observer(({ data }: { data: any }) => {
   }; // # what for?
 
   const [state] = useState(useGlobalState());
+  useEffect(() => {
+    state.setBlogNoteMedia(data.id);
+  }, []);
 
   return (
     <Card className={styles.card}>
       <div className={styles.cardBorder}>
-        <Badge className={styles.closeButton} color='danger'><img
-          className={styles.closeIcon}
-          alt="X"
-          src={closeIcon}
-          onClick={() => {
-            state.setIdInput(data.id);
-            state.deleteBlogNote();
-            state.emptyIdInput();
-          }}
-        /></Badge>
-        {/* <ImageContainer action={action.action} data={data} /> // # */}
+        <Badge className={styles.closeButton} color="danger">
+          <img
+            className={styles.closeIcon}
+            alt="X"
+            src={closeIcon}
+            onClick={() => {
+              state.setIdInput(data.id);
+              state.deleteBlogNote();
+              state.emptyIdInput();
+            }}
+          />
+        </Badge>
+        {state.blogNoteMedia && <ImageContainer action={action.action} data={state.blogNoteMedia} />}
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>
             <CardTitle className={styles.title} tag="h5">

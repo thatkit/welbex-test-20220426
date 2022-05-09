@@ -10,16 +10,16 @@ export const ImageContainer = ({
   action: any;
   data: any;
 }) => {
-  console.log(data);
   return (
     <div className={styles.imgContainer}>
-      {data.media.map((file: any, ind: number) => {
+      {data.map((url: any, ind: number) => {
+        console.log('url:', url.url)
         return action === 'edit' ? (
           <ImageDeleteWrapper key={ind}>
-            <Image blogNoteTitle={data.title} file={file} />
+            <Image url={url.url} blogNoteTitle={'hardcode data.title'} file={'hardcode data.title'} />
           </ImageDeleteWrapper>
         ) : (
-          <Image blogNoteTitle={data.title} file={file} key={ind} />
+          <Image url={url.url} blogNoteTitle={'hardcode data.title'} file={'hardcode data.title'} key={ind} />
         );
       })}
     </div>

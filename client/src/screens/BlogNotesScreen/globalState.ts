@@ -4,12 +4,14 @@ import { BlogNote } from '../../types';
 import { mockupUrl } from '../../mockupData/url';
 import { apiClient } from '../../api';
 import { apiMediaClient } from '../../api/mediaClient';
+import { lutimesSync } from 'fs';
 
 export class GlobalState {
   client;
   mediaClient;
   blogNotes: BlogNote[] = [];
   username: string | undefined = '';
+  blogNoteMedia: any;
 
   blogNoteInputs = {
     id: '',
@@ -49,13 +51,37 @@ export class GlobalState {
 
   /* ~~~ TEXTUAL CRUD ~~~ */
 
-  async setBlogNotes() {
-    const response = await this.client.getBlogNotes();
-    this.blogNotes = await response;
-  }
-
   async saveBlogNote() {
     await this.client.saveBlogNote(this.blogNoteInputs);
+  }
+
+  async setBlogNotes() {
+    this.blogNotes = await this.fetchAllBlogNotes();
+  }
+
+  async fetchAllBlogNotes() {
+    return await this.client.getBlogNotes();
+  }
+
+  async setBlogNoteMedia(blogNoteId: string) {
+    const keys = await this.fetchOneBlogNoteMedia(blogNoteId);
+    const originalFilenames = keys.map((key: string) =>
+      key.slice(key.lastIndexOf('/') + 1),
+    );
+    const urls = await Promise.all(
+      originalFilenames.map((filename: string) =>
+        this.fetchOneMediaUrl(blogNoteId, filename),
+      ),
+    );
+    this.blogNoteMedia = urls;
+  }
+
+  async fetchOneBlogNoteMedia(blogNoteId: string) {
+    return await this.client.getBlogNoteMedia(blogNoteId);
+  }
+
+  async fetchOneMediaUrl(blogNoteId: string, mediaOriginalname: string) {
+    return await this.client.getBlogNoteMediaUrl(blogNoteId, mediaOriginalname);
   }
 
   async updateBlogNote() {
@@ -67,7 +93,10 @@ export class GlobalState {
   }
 
   async deleteBlogNote() {
-    await this.client.deleteBlogNote(this.blogNoteInputs, this.blogNoteInputs.id);
+    await this.client.deleteBlogNote(
+      this.blogNoteInputs,
+      this.blogNoteInputs.id,
+    );
     await this.setBlogNotes();
   }
 

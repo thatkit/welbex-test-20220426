@@ -4,9 +4,11 @@ import { useGlobalState } from '../../globalState';
 import styles from './styles.module.scss';
 
 export const Image = ({
+  url,
   blogNoteTitle,
   file,
 }: {
+  url: string;
   blogNoteTitle: string;
   file: any;
 }) => {
@@ -15,7 +17,7 @@ export const Image = ({
     <CardImg
       className={styles.img}
       alt="image"
-      src={useGlobalState().fetchPresignedUrl(blogNoteTitle, file.fileName)}
+      src={url}
       top
     />
   );

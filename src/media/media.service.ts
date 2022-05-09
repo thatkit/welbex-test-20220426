@@ -9,8 +9,9 @@ export class MediaService {
     return this.fbClient.createObjects(username, blogNoteId, files);
   }
 
-  findAllObjects(username: string, blogNoteId: string) {
-    return this.fbClient.findAllObjects(username, blogNoteId);
+  async findAllObjects(username: string, blogNoteId: string) {
+    const response = await this.fbClient.findAllObjects(username, blogNoteId);
+    return response.map((media) => media.Key);
   }
 
   deleteObjects(username: string, blogNoteId: string, fileNames) {

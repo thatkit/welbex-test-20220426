@@ -23,12 +23,12 @@ export class MediaController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('url/:blogNoteId')
-  fetchPresignedUrl(@Request() req, @Param() blogNoteId, @Body() fileName) {
+  @Get('url/:blogNoteId/:fileName')
+  fetchPresignedUrl(@Request() req, @Param() params) {
     return this.mediaService.fetchPresignedUrl(
       req.user.username,
-      blogNoteId.blogNoteId,
-      fileName.fileName,
+      params.blogNoteId,
+      params.fileName,
     );
   }
 }
