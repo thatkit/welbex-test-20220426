@@ -19,9 +19,9 @@ export class GlobalState {
     title: '',
     message: '',
     files: [],
-    deleteFiles: [],
+    deleteFiles: [''],
   };
-  
+
   constructor() {
     makeAutoObservable(this);
     this.client = new apiClient();
@@ -29,7 +29,7 @@ export class GlobalState {
   }
 
   /* ~~~ SETTERS ~~~ */
-  
+
   async setBlogNotes() {
     this.blogNotes = await this.fetchAllBlogNotes();
   }
@@ -37,52 +37,56 @@ export class GlobalState {
   async setMedia(blogNoteId: string) {
     this.blogNoteMedia = await this.fetchBlogNoteMedia(blogNoteId);
   }
-  
+
   /* ~~~ GETTERS ~~~ */
-  
+
   get getBlogNotes(): BlogNote[] {
     return this.blogNotes
-    .slice()
-    .sort(
-      (prev, next) =>
+      .slice()
+      .sort(
+        (prev, next) =>
           new Date(next.date).getTime() - new Date(prev.date).getTime(),
-          );
+      );
   }
 
   get getMedia(): Media[] {
     return this.blogNoteMedia;
   }
-  
+
   /* ~~~ FORM INPUT CONTROL ~~~ */
 
   setIdInput(id: string) {
     if (!Boolean(this.blogNoteInputs.id)) return (this.blogNoteInputs.id = id);
   }
-  
+
   emptyIdInput() {
     this.blogNoteInputs.id = '';
   }
-  
+
   setTitleInput(title: string) {
     this.blogNoteInputs.title = title;
   }
-  
+
   setMessageInput(message: string) {
     this.blogNoteInputs.message = message;
   }
-  
+
   async setFilesInput(convertedFiles: any) {
     this.blogNoteInputs.files = await convertedFiles;
   }
 
-  setDeleteFilesInput() {}
-  
+  setDeleteFilesInput() {
+    const filenames = this.blogNoteMedia.map((media) => media.originalFilename);
+    this.blogNoteInputs.deleteFiles = filenames;
+  }
+
   /* ~~~ BLOGNOTES CRUD ~~~ */
 
   // CREATE
 
   async saveBlogNote() {
-    await this.client.saveBlogNote(this.blogNoteInputs);
+    const { deleteFiles, ...blogNoteInputWithoutDeleteFiles } = this.blogNoteInputs;
+    await this.client.saveBlogNote(blogNoteInputWithoutDeleteFiles);
   }
 
   // READ
@@ -105,7 +109,6 @@ export class GlobalState {
         };
       }),
     );
-    log(blogNoteMedia);
     return blogNoteMedia;
   }
 

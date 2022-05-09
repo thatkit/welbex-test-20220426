@@ -16,12 +16,10 @@ export class BlogNoteInput {
   title!: string;
   message!: string;
   files?: any; // # need a profound typing
-  deleteFiles?: any; // # need a profound typing
+  deleteFiles?: string[];
 }
 
 export class Media {
   originalFilename!: string;
   url!: string;
 }
-
-export type DeleteFiles = string[];

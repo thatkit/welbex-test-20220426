@@ -35,6 +35,7 @@ export const BlogNote = observer(({ blogNote }: { blogNote: BlogNoteType }) => {
             src={closeIcon}
             onClick={() => {
               state.setIdInput(blogNote.id);
+              state.setDeleteFilesInput();
               state.deleteBlogNote();
               state.emptyIdInput();
             }}

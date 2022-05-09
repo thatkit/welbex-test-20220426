@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { BlogNoteInput, DeleteFiles, User } from '../types';
+import { BlogNoteInput, User } from '../types';
 import { convertJsObjToFormData } from '../tools/convertJsObjToFormData';
 
 export class apiClient {
@@ -63,12 +63,14 @@ export class apiClient {
   /* ~~~ FOR BLOGNOTES CRUD ~~~ */
 
   async saveBlogNote(blogNote: BlogNoteInput) {
+    const body = convertJsObjToFormData(blogNote);
+    console.log('body: ', body)
     try {
       // console.log('req original:', request);
       const response = await fetch(`${this.baseUrl}/blog-notes`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-        body: convertJsObjToFormData(blogNote),
+        body,
       });
 
       if (!response.ok) {
@@ -164,7 +166,7 @@ export class apiClient {
     }
   }
 
-  async deleteBlogNote(deleteFiles: DeleteFiles, blogNoteId: string) {
+  async deleteBlogNote(deleteFiles: string[], blogNoteId: string) {
     const body = convertJsObjToFormData(deleteFiles);
     console.log('body:', body);
     try {
