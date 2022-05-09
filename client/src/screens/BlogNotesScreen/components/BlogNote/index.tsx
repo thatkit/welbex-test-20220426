@@ -22,7 +22,7 @@ export const BlogNote = observer(({ blogNote }: { blogNote: BlogNoteType }) => {
 
   const [state] = useState(useGlobalState());
   useEffect(() => {
-    state.setBlogNoteMedia(blogNote.id);
+    state.setMedia(blogNote.id);
   }, []);
 
   return (
@@ -41,7 +41,7 @@ export const BlogNote = observer(({ blogNote }: { blogNote: BlogNoteType }) => {
           />
         </Badge>
         {state.blogNoteMedia && (
-          <ImageContainer action={action.action} data={state.blogNoteMedia} />
+          <ImageContainer action={action.action} data={state.getMedia} />
         )}
         <CardBody className={styles.cardBody}>
           <div className={styles.textPart}>

@@ -1,17 +1,18 @@
 import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
-import { BlogNote } from '../../types';
+import { BlogNote, Media } from '../../types';
 import { mockupUrl } from '../../mockupData/url';
 import { apiClient } from '../../api';
 import { apiMediaClient } from '../../api/mediaClient';
-import { lutimesSync } from 'fs';
+import { log } from '../../tools/log';
 
 export class GlobalState {
   client;
   mediaClient;
+
   blogNotes: BlogNote[] = [];
-  username: string | undefined = '';
-  blogNoteMedia: any;
+
+  blogNoteMedia: Media[] = [];
 
   blogNoteInputs = {
     id: '',
@@ -20,60 +21,92 @@ export class GlobalState {
     files: [],
     deleteFiles: [],
   };
-
+  
   constructor() {
     makeAutoObservable(this);
     this.client = new apiClient();
     this.mediaClient = new apiMediaClient();
   }
 
+  /* ~~~ SETTERS ~~~ */
+  
+  async setBlogNotes() {
+    this.blogNotes = await this.fetchAllBlogNotes();
+  }
+
+  async setMedia(blogNoteId: string) {
+    this.blogNoteMedia = await this.fetchBlogNoteMedia(blogNoteId);
+  }
+  
+  /* ~~~ GETTERS ~~~ */
+  
+  get getBlogNotes(): BlogNote[] {
+    return this.blogNotes
+    .slice()
+    .sort(
+      (prev, next) =>
+          new Date(next.date).getTime() - new Date(prev.date).getTime(),
+          );
+  }
+
+  get getMedia(): Media[] {
+    return this.blogNoteMedia;
+  }
+  
   /* ~~~ FORM INPUT CONTROL ~~~ */
 
   setIdInput(id: string) {
     if (!Boolean(this.blogNoteInputs.id)) return (this.blogNoteInputs.id = id);
   }
-
+  
   emptyIdInput() {
     this.blogNoteInputs.id = '';
   }
-
+  
   setTitleInput(title: string) {
     this.blogNoteInputs.title = title;
   }
-
+  
   setMessageInput(message: string) {
     this.blogNoteInputs.message = message;
   }
-
+  
   async setFilesInput(convertedFiles: any) {
     this.blogNoteInputs.files = await convertedFiles;
   }
 
-  /* ~~~ TEXTUAL CRUD ~~~ */
+  setDeleteFilesInput() {}
+  
+  /* ~~~ BLOGNOTES CRUD ~~~ */
+
+  // CREATE
 
   async saveBlogNote() {
     await this.client.saveBlogNote(this.blogNoteInputs);
   }
 
-  async setBlogNotes() {
-    this.blogNotes = await this.fetchAllBlogNotes();
-  }
+  // READ
 
   async fetchAllBlogNotes() {
     return await this.client.getBlogNotes();
   }
 
-  async setBlogNoteMedia(blogNoteId: string) {
+  async fetchBlogNoteMedia(blogNoteId: string) {
     const keys = await this.fetchOneBlogNoteMedia(blogNoteId);
     const originalFilenames = keys.map((key: string) =>
       key.slice(key.lastIndexOf('/') + 1),
     );
-    const urls = await Promise.all(
-      originalFilenames.map((filename: string) =>
-        this.fetchOneMediaUrl(blogNoteId, filename),
-      ),
+    const blogNoteMedia: Media[] = await Promise.all(
+      originalFilenames.map(async (filename: string) => {
+        const urlObj = await this.fetchOneMediaUrl(blogNoteId, filename);
+        return {
+          originalFilename: filename,
+          url: urlObj.url,
+        };
+      }),
     );
-    this.blogNoteMedia = urls;
+    log(blogNoteMedia);
+    return blogNoteMedia;
   }
 
   async fetchOneBlogNoteMedia(blogNoteId: string) {
@@ -84,6 +117,8 @@ export class GlobalState {
     return await this.client.getBlogNoteMediaUrl(blogNoteId, mediaOriginalname);
   }
 
+  // UPDATE
+
   async updateBlogNote() {
     await this.client.updateBlogNote(
       this.blogNoteInputs,
@@ -92,31 +127,14 @@ export class GlobalState {
     await this.setBlogNotes();
   }
 
+  // DELETE
+
   async deleteBlogNote() {
     await this.client.deleteBlogNote(
       this.blogNoteInputs.deleteFiles,
       this.blogNoteInputs.id,
     );
     await this.setBlogNotes();
-  }
-
-  fetchPresignedUrl(blogNoteTitle: string, fileName: string) {
-    return mockupUrl;
-  }
-
-  /* ~~~ SETTERS & GETTERS ~~~ */
-
-  get getUsername(): string | undefined {
-    return this.username;
-  }
-
-  get getBlogNotes() {
-    return this.blogNotes
-      .slice()
-      .sort(
-        (prev, next) =>
-          new Date(next.date).getTime() - new Date(prev.date).getTime(),
-      );
   }
 }
 
