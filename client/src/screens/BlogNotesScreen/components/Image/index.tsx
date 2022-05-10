@@ -8,7 +8,7 @@ export const Image = ({ url, filename }: { url: string; filename: string }) => {
   return (
     <CardImg
       className={styles.img}
-      alt="image"
+      alt="media file"
       src={checkFileFormat(filename) ? url : videoIcon}
       top
     />

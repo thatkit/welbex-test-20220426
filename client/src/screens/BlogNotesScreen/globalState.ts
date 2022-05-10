@@ -129,6 +129,7 @@ export class GlobalState {
     const { deleteFiles, ...blogNoteInputWithoutDeleteFiles } =
       this.blogNoteInputs;
     await this.client.saveBlogNote(blogNoteInputWithoutDeleteFiles);
+    await this.initialise();
   }
 
   // READ
@@ -171,7 +172,7 @@ export class GlobalState {
       blogNoteInputWithoutId,
       this.blogNoteInputs.id,
     );
-    await this.setBlogNotes();
+    await this.initialise();
   }
 
   // DELETE
@@ -181,7 +182,7 @@ export class GlobalState {
       this.blogNoteInputs.deleteFiles,
       this.blogNoteInputs.id,
     );
-    await this.setBlogNotes();
+    await this.initialise();
   }
 }
 
