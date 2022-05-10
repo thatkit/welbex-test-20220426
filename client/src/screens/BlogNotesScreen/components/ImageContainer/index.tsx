@@ -12,14 +12,14 @@ export const ImageContainer = ({
 }): JSX.Element => {
   return (
     <div className={styles.imgContainer}>
-      {data.map((url: any, ind: number) => {
+      {data.map((media: any, ind: number) => {
         // console.log('url:', url.url)
         return action === 'edit' ? (
           <ImageDeleteWrapper key={ind}>
-            <Image url={url.url} />
+            <Image url={media.url} filename={media.originalFilename} />
           </ImageDeleteWrapper>
         ) : (
-          <Image url={url.url} key={ind} />
+          <Image url={media.url} filename={media.originalFilename} key={ind} />
         );
       })}
     </div>

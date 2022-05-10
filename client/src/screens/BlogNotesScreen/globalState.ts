@@ -23,7 +23,7 @@ export class GlobalState {
     makeAutoObservable(this);
     this.client = new apiClient();
   }
-  
+
   async initialise() {
     await this.setBlogNotes();
     await this.setMedia();
@@ -33,20 +33,20 @@ export class GlobalState {
 
   set blogNotes(blogNotes: BlogNote[]) {
     this._blogNotes = blogNotes;
-  }  
+  }
 
   async setBlogNotes() {
     this.blogNotes = await this.fetchAllBlogNotes();
-  }  
+  }
 
   async setMedia() {
     this.blogNotes.forEach(async (blogNote) => {
       this._blogNotesMedia.push({
         blogNoteId: blogNote.id,
         media: await this.fetchBlogNoteMedia(blogNote.id),
-      });  
-    });  
-  }  
+      });
+    });
+  }
 
   /* ~~~ GETTERS ~~~ */
 
@@ -89,11 +89,11 @@ export class GlobalState {
     this.blogNoteInputs.id = '';
   }
 
-  setTitleInput(title: string) {
+  set titleInput(title: string) {
     this.blogNoteInputs.title = title;
   }
 
-  setMessageInput(message: string) {
+  set messageInput(message: string) {
     this.blogNoteInputs.message = message;
   }
 
@@ -101,12 +101,29 @@ export class GlobalState {
     this.blogNoteInputs.files = await convertedFiles;
   }
 
-  setDeleteFilesInput(blogNoteId: string) {
+  set deleteFilesInput(deleteFiles: string) {
+    this.blogNoteInputs.deleteFiles = deleteFiles;
+  }
+
+  setDeleteFilesAll(blogNoteId: string) {
     const blogNoteMedia = this.getOneBlogNoteMedia(blogNoteId);
     if (blogNoteMedia?.media) {
-      const filenames = blogNoteMedia.media.map((file) => file.originalFilename);
-      this.blogNoteInputs.deleteFiles = filenames.join('/');
+      const filenames = blogNoteMedia.media.map(
+        (file) => file.originalFilename,
+      );
+      this.deleteFilesInput = filenames.join('/');
     }
+  }
+
+  setDeleteFilesSeveral(originalFilename: string) {
+    this.deleteFilesInput =
+      this.blogNoteInputs.deleteFiles.length === 0
+        ? originalFilename
+        : this.blogNoteInputs.deleteFiles + `/${originalFilename}`;
+    console.log(
+      'this.blogNoteInputs.deleteFiles:',
+      this.blogNoteInputs.deleteFiles,
+    );
   }
 
   /* ~~~ BLOGNOTES CRUD ~~~ */

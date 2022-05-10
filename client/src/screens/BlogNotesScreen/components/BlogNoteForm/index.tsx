@@ -20,7 +20,7 @@ export const BlogNoteForm = observer(({ data }: { data: any }) => {
             if (data.title) target.value = data.title;
           }}
           onChange={({ target }) => {
-            state.setTitleInput(target.value);
+            state.titleInput = target.value;
             state.setIdInput(data.id || uuid());
           }}
         />
@@ -35,7 +35,7 @@ export const BlogNoteForm = observer(({ data }: { data: any }) => {
           onFocus={({ target }) => {
             if (data.message) target.value = data.message;
           }}
-          onChange={({ target }) => state.setMessageInput(target.value)}
+          onChange={({ target }) => state.messageInput = target.value}
         />
         <Label for="message">Message</Label>
       </FormGroup>

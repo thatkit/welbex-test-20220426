@@ -63,14 +63,12 @@ export class apiClient {
   /* ~~~ FOR BLOGNOTES CRUD ~~~ */
 
   async saveBlogNote(blogNote: BlogNoteInput) {
-    const body = convertJsObjToFormData(blogNote);
-    console.log('body: ', body);
     try {
       // console.log('req original:', request);
       const response = await fetch(`${this.baseUrl}/blog-notes`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-        body,
+        body: convertJsObjToFormData(blogNote),
       });
 
       if (!response.ok) {
