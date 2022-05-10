@@ -25,7 +25,7 @@ import { join } from 'path';
     AuthModule,
     UsersModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'client', 'build'),
+      rootPath: join(__dirname, 'build'),
     }),
   ],
 })
