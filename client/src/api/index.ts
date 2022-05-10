@@ -64,12 +64,12 @@ export class apiClient {
 
   async saveBlogNote(blogNote: BlogNoteInput) {
     try {
-      // console.log('req original:', request);
       const response = await fetch(`${this.baseUrl}/blog-notes`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
         body: convertJsObjToFormData(blogNote),
       });
+      // console.log('res original:', response);
 
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
