@@ -2,7 +2,6 @@ import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import { BlogNote, BlogNotesMedia, Media } from '../../types';
 import { apiClient } from '../../api';
-import { log } from '../../tools/log';
 
 export class GlobalState {
   client;
@@ -120,10 +119,6 @@ export class GlobalState {
       this.blogNoteInputs.deleteFiles.length === 0
         ? originalFilename
         : this.blogNoteInputs.deleteFiles + `/${originalFilename}`;
-    console.log(
-      'this.blogNoteInputs.deleteFiles:',
-      this.blogNoteInputs.deleteFiles,
-    );
   }
 
   /* ~~~ BLOGNOTES CRUD ~~~ */
@@ -170,8 +165,10 @@ export class GlobalState {
   // UPDATE
 
   async updateBlogNote() {
+    const { id, ...blogNoteInputWithoutId } =
+      this.blogNoteInputs;
     await this.client.updateBlogNote(
-      this.blogNoteInputs,
+      blogNoteInputWithoutId,
       this.blogNoteInputs.id,
     );
     await this.setBlogNotes();

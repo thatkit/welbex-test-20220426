@@ -19,6 +19,13 @@ export class BlogNoteInput {
   deleteFiles?: string;
 }
 
+export class BlogNoteInputWithoutId {
+  title?: string;
+  message?: string;
+  files?: any; // # need a profound typing
+  deleteFiles?: string;
+}
+
 export class Media {
   originalFilename!: string;
   url!: string;

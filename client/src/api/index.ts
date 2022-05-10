@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { BlogNoteInput, User } from '../types';
+import { BlogNoteInput, BlogNoteInputWithoutId, User } from '../types';
 import { convertJsObjToFormData } from '../tools/convertJsObjToFormData';
 
 export class apiClient {
@@ -143,7 +143,7 @@ export class apiClient {
     }
   }
 
-  async updateBlogNote(blogNote: BlogNoteInput, blogNoteId: string) {
+  async updateBlogNote(blogNote: BlogNoteInputWithoutId, blogNoteId: string) {
     try {
       const response = await fetch(`${this.baseUrl}/blog-notes/${blogNoteId}`, {
         method: 'PUT',

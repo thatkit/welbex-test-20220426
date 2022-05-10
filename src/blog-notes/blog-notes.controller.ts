@@ -55,12 +55,12 @@ export class BlogNotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FilesInterceptor('addFiles'))
+  @UseInterceptors(FilesInterceptor('files'))
   @Put(':blogNoteId')
   async updateWithMedia(
     @Param('blogNoteId') blogNoteId: string,
     @Body() updateBlogNoteFormDataDto: UpdateBlogNoteFormDataDto,
-    @UploadedFiles() addFiles: Express.Multer.File[],
+    @UploadedFiles() files: Express.Multer.File[],
     @Request() req,
   ) {
     const { deleteFiles, ...updateBlogNoteFormData } =
@@ -73,11 +73,11 @@ export class BlogNotesController {
     });
 
     let mediaCreateResponse;
-    if (addFiles.length !== 0) {
+    if (files.length !== 0) {
       mediaCreateResponse = await this.mediaService.createObjects(
         req.user.username,
         blogNoteId,
-        addFiles,
+        files,
       );
     }
 
