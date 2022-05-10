@@ -11,8 +11,11 @@ export const FilesInput = observer(({ data }: { data: any }): JSX.Element => {
 
   return (
     <>
-      {Boolean(data.media) !== false && (
-        <ImageContainer action={'edit'} data={data} />
+      {state.hasMedia(data.id) && (
+        <ImageContainer
+          action={'edit'}
+          data={state.getOneBlogNoteMedia(data.id)?.media}
+        />
       )}
       <FormGroup>
         <Input

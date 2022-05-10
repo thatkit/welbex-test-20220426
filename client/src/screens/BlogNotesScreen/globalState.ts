@@ -2,12 +2,10 @@ import { createContext, useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 import { BlogNote, BlogNotesMedia, Media } from '../../types';
 import { apiClient } from '../../api';
-import { apiMediaClient } from '../../api/mediaClient';
 import { log } from '../../tools/log';
 
 export class GlobalState {
   client;
-  mediaClient;
 
   _blogNotes: BlogNote[] = [];
 
@@ -24,7 +22,6 @@ export class GlobalState {
   constructor() {
     makeAutoObservable(this);
     this.client = new apiClient();
-    this.mediaClient = new apiMediaClient();
   }
   
   async initialise() {
@@ -156,11 +153,11 @@ export class GlobalState {
   // UPDATE
 
   async updateBlogNote() {
-    await this.client.updateBlogNote(
-      this.blogNoteInputs,
-      this.blogNoteInputs.id,
-    );
-    await this.setBlogNotes();
+    // await this.client.updateBlogNote(
+    //   this.blogNoteInputs,
+    //   this.blogNoteInputs.id,
+    // );
+    // await this.setBlogNotes();
   }
 
   // DELETE

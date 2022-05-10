@@ -23,8 +23,10 @@ export const BlogNoteModal = observer(
           <ModalFooter>
             <Button
               onClick={() => {
-                state.saveBlogNote();
-                state.setBlogNotes();
+                action.action === 'create'
+                  ? state.saveBlogNote()
+                  : state.updateBlogNote();
+                state.initialise();
                 setIsOpen(false);
               }}
               color="warning"
