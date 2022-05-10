@@ -14,7 +14,7 @@ export const BlogNoteCloud = observer((): JSX.Element => {
 
   return (
     <CardGroup className={styles.cardGroup}>
-      {state.getBlogNotes.map((blogNoteData, ind) => {
+      {state.getSortedBlogNotes.map((blogNoteData, ind) => {
         return <BlogNote blogNote={blogNoteData} key={ind} />;
       })}
     </CardGroup>

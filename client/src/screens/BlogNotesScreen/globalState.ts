@@ -9,9 +9,9 @@ export class GlobalState {
   client;
   mediaClient;
 
-  blogNotes: BlogNote[] = [];
+  _blogNotes: BlogNote[] = [];
 
-  blogNotesMedia: BlogNotesMedia[] = [];
+  _blogNotesMedia: BlogNotesMedia[] = [];
 
   blogNoteInputs = {
     id: '',
@@ -26,34 +26,38 @@ export class GlobalState {
     this.client = new apiClient();
     this.mediaClient = new apiMediaClient();
   }
-
-  /* ~~~ SETTERS ~~~ */
-
-  set setterBlogNotes(blogNotes: BlogNote[]) {
-    this.blogNotes = blogNotes;
-  }
-
-  async setBlogNotes() {
-    this.setterBlogNotes = await this.fetchAllBlogNotes();
-  }
-
-  async setMedia() {
-    this.getBlogNotes.forEach(async (blogNote) => {
-      this.blogNotesMedia.push({
-        blogNoteId: blogNote.id,
-        media: await this.fetchBlogNoteMedia(blogNote.id),
-      });
-    });
-  }
-
+  
   async initialise() {
     await this.setBlogNotes();
     await this.setMedia();
   }
 
+  /* ~~~ SETTERS ~~~ */
+
+  set blogNotes(blogNotes: BlogNote[]) {
+    this._blogNotes = blogNotes;
+  }  
+
+  async setBlogNotes() {
+    this.blogNotes = await this.fetchAllBlogNotes();
+  }  
+
+  async setMedia() {
+    this.blogNotes.forEach(async (blogNote) => {
+      this._blogNotesMedia.push({
+        blogNoteId: blogNote.id,
+        media: await this.fetchBlogNoteMedia(blogNote.id),
+      });  
+    });  
+  }  
+
   /* ~~~ GETTERS ~~~ */
 
-  get getBlogNotes(): BlogNote[] {
+  get blogNotes(): BlogNote[] {
+    return this._blogNotes;
+  }
+
+  get getSortedBlogNotes(): BlogNote[] {
     return this.blogNotes
       .slice()
       .sort(
@@ -63,11 +67,13 @@ export class GlobalState {
   }
 
   getOneBlogNoteMedia(blogNoteId: string): BlogNotesMedia | undefined {
-    const blogNoteMedia = this.blogNotesMedia.find(
+    const blogNoteMedia = this._blogNotesMedia.find(
       (blogNote) => blogNote.blogNoteId === blogNoteId,
     );
     return blogNoteMedia;
   }
+
+  /* ~~~ BOOLEANS ~~~ */
 
   hasMedia(blogNoteId: string) {
     const blogNoteMedia = this.getOneBlogNoteMedia(blogNoteId);
@@ -104,7 +110,6 @@ export class GlobalState {
       const filenames = blogNoteMedia.media.map((file) => file.originalFilename);
       this.blogNoteInputs.deleteFiles = filenames.join('/');
     }
-    console.log('this.blogNoteInputs:', this.blogNoteInputs);
   }
 
   /* ~~~ BLOGNOTES CRUD ~~~ */
