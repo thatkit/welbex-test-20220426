@@ -9,7 +9,7 @@ export const Navbar = (): JSX.Element => {
   return (
     <Nav className={styles.nav}>
       <NavItem className={styles.topTitle} tag="h1">
-        {state.getUsername || 'The best human being'}'s Blog
+        {state.username}'s Blog
       </NavItem>
     </Nav>
   );

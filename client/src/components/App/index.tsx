@@ -10,7 +10,7 @@ const App = observer(() => {
   
   useEffect(() => {
     state.validateToken();
-  }, []); // # INVOKED TWICE
+  }, []);
 
   return state.isAuthorised
     ? <BlogNotesScreen />

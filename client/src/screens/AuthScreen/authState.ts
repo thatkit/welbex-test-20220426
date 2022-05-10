@@ -8,7 +8,7 @@ export class AuthState {
   client;
   isAuthorised: boolean = false;
 
-  username: string = '';
+  _username: string = '';
 
   userInputs: User = {
     username: '',
@@ -49,7 +49,7 @@ export class AuthState {
     
 	  if (accessToken?.accessToken) {
       Cookies.set('accessToken', accessToken?.accessToken);
-      this.setAuthorised();
+      this.validateToken();
     }
   }
 
@@ -59,7 +59,7 @@ export class AuthState {
 
       if (response.username) {
         this.setAuthorised();
-        this.setUsername = response.username;
+        this.username = response.username;
       }
     }
   }
@@ -74,12 +74,12 @@ export class AuthState {
     this.isAuthorised = false;
   }
 
-  set setUsername(username: string) {
-    this.username = username;
+  set username(username: string) {
+    this._username = username;
   }
 
-  get getUsername() {
-    return this.username;
+  get username(): string {
+    return this._username;
   }
 
 }
