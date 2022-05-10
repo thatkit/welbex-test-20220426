@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { BlogNotesModule } from './blog-notes/blog-notes.module';
 import { BlogNote } from './blog-notes/entities/blog-note.entity';
 import { AuthModule } from './auth/auth.module';
@@ -26,11 +24,9 @@ import { join } from 'path';
     }),
     AuthModule,
     UsersModule,
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', '..', 'client', 'public'),
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'client', 'build'),
+    }),
   ],
-  // controllers: [AppController],
-  // providers: [AppService],
 })
 export class AppModule {}

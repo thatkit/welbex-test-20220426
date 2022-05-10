@@ -3,7 +3,7 @@ import { BlogNoteInput, BlogNoteInputWithoutId, User } from '../types';
 import { convertJsObjToFormData } from '../tools/convertJsObjToFormData';
 
 export class apiClient {
-  baseUrl: string = 'http://localhost:3001';
+  baseUrl: string = 'http://localhost:3000';
 
   /* ~~~ FOR AUTH SCREEN ~~~ */
 
