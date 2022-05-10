@@ -170,11 +170,11 @@ export class GlobalState {
   // UPDATE
 
   async updateBlogNote() {
-    // await this.client.updateBlogNote(
-    //   this.blogNoteInputs,
-    //   this.blogNoteInputs.id,
-    // );
-    // await this.setBlogNotes();
+    await this.client.updateBlogNote(
+      this.blogNoteInputs,
+      this.blogNoteInputs.id,
+    );
+    await this.setBlogNotes();
   }
 
   // DELETE

@@ -26,7 +26,6 @@ export const BlogNoteModal = observer(
                 action.action === 'create'
                   ? state.saveBlogNote()
                   : state.updateBlogNote();
-                state.initialise();
                 setIsOpen(false);
               }}
               color="warning"
