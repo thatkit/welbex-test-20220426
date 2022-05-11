@@ -16,7 +16,7 @@ The app is a blog where one can _create_ / _read_ / _update_ / _delete_ posts (b
 
 ## Technologies & Architecture
 
-**BACKEND**: Typescript / NestJS / JWT / ;
+**BACKEND**: Typescript / NestJS / JWT;
 
 **DATABASE**: PostgreSQL + TypeORM;
 
